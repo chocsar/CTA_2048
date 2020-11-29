@@ -3,7 +3,9 @@ using UnityEngine.SceneManagement;
 
 public class InGamePresenter : MonoBehaviour
 {
-    
+    private const int stageSize = 4;
+    private const int minCellValue = 2;
+
     private InGameModel inGameModel;
     private InGameView inGameView;
 
@@ -14,10 +16,6 @@ public class InGamePresenter : MonoBehaviour
     /// 盤面の再描画を行う必要があるかのフラグ
     /// </summary>
     private bool isDirty;
-
-    private int stageSize = 4;
-    private int minCellValue = 2;
-
 
 
     private void Start()
