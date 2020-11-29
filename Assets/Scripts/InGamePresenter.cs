@@ -61,7 +61,7 @@ public class InGamePresenter : MonoBehaviour
             {
                 for (var row = 0; row < 4; row++)
                 {
-                    CheckCell(row, col, 1, 0);
+                    CheckCells(row, col, 1, 0);
                 }
             }
         }
@@ -71,7 +71,7 @@ public class InGamePresenter : MonoBehaviour
             {
                 for (var col = 0; col < 4; col++)
                 {
-                    CheckCell(row, col, -1, 0);
+                    CheckCells(row, col, -1, 0);
                 }
             }
         }
@@ -81,7 +81,7 @@ public class InGamePresenter : MonoBehaviour
             {
                 for (var col = 0; col < 4; col++)
                 {
-                    CheckCell(row, col, 0, -1);
+                    CheckCells(row, col, 0, -1);
                 }
             }
         }
@@ -91,7 +91,7 @@ public class InGamePresenter : MonoBehaviour
             {
                 for (var col = 0; col < 4; col++)
                 {
-                    CheckCell(row, col, 0, 1);
+                    CheckCells(row, col, 0, 1);
                 }
             }
         }
@@ -119,7 +119,7 @@ public class InGamePresenter : MonoBehaviour
     
     
 
-    private bool CheckBorder(int row, int column, int horizontal, int vertical)
+    private bool CheckBorders(int row, int column, int horizontal, int vertical)
     {
         // チェックマスが4x4外ならそれ以上処理を行わない
         if (row < 0 || row >= 4 || column < 0 || column >= 4)
@@ -138,10 +138,10 @@ public class InGamePresenter : MonoBehaviour
         return true;
     }
 
-    private void CheckCell(int row, int column, int horizontal, int vertical)
+    private void CheckCells(int row, int column, int horizontal, int vertical)
     {
         // 4x4の境界線チェック
-        if (CheckBorder(row, column, horizontal, vertical) == false)
+        if (CheckBorders(row, column, horizontal, vertical) == false)
         {
             return;
         }
@@ -151,14 +151,14 @@ public class InGamePresenter : MonoBehaviour
             return;
         }
         // 移動可能条件を満たした場合のみ移動処理
-        MoveCell(row, column, horizontal, vertical);
+        MoveCells(row, column, horizontal, vertical);
     }
 
-    private void MoveCell(int row, int column, int horizontal, int vertical)
+    private void MoveCells(int row, int column, int horizontal, int vertical)
     {
         // 4x4境界線チェック
         // 再起呼び出し以降も毎回境界線チェックはするため冒頭で呼び出しておく
-        if (CheckBorder(row, column, horizontal, vertical) == false)
+        if (CheckBorders(row, column, horizontal, vertical) == false)
         {
             return;
         }
@@ -180,7 +180,7 @@ public class InGamePresenter : MonoBehaviour
             stageState[nextRow, nextCol] = value;
 
             // 移動先のマスでさらに移動チェック
-            MoveCell(nextRow, nextCol, horizontal, vertical);
+            MoveCells(nextRow, nextCol, horizontal, vertical);
         }
         // 同じ値のときは合成処理
         else if (value == nextValue)
