@@ -17,6 +17,7 @@ public class InGamePresenter : MonoBehaviour
     /// </summary>
     private bool isDirty;
 
+    private float probability = 0.5f;
 
     private void Start()
     {
@@ -38,7 +39,7 @@ public class InGamePresenter : MonoBehaviour
         var posA = new Vector2(Random.Range(0, stageSize), Random.Range(0, stageSize));
         var posB = new Vector2((posA.x + Random.Range(1, stageSize - 1)) % stageSize, (posA.y + Random.Range(1, stageSize - 1)) % stageSize);
         stageStates[(int)posA.x, (int)posA.y] = minCellValue;
-        stageStates[(int)posB.x, (int)posB.y] = Random.Range(0, 1.0f) < 0.5f ? minCellValue : minCellValue * 2;
+        stageStates[(int)posB.x, (int)posB.y] = Random.Range(0, 1.0f) <  probability? minCellValue : minCellValue * 2;
 
         // ステージの初期状態をViewに反映
         for (var i = 0; i < stageSize; i++)
