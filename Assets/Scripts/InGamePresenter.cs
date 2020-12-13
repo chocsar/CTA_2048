@@ -5,6 +5,9 @@ public class InGamePresenter : MonoBehaviour
 {
     private const int StageSize = 4;
     private const int MinCellValue = 2;
+    private const float Probability = 0.5f;
+    private const int FirstDimension = 0;
+    private const int SecondDimension = 1;
 
     private InGameModel inGameModel;
     private InGameView inGameView;
@@ -17,7 +20,7 @@ public class InGamePresenter : MonoBehaviour
     /// </summary>
     private bool isDirty;
 
-    private float probability = 0.5f;
+    
 
     private void Start()
     {
@@ -226,9 +229,9 @@ public class InGamePresenter : MonoBehaviour
     private bool IsGameOver(int[,] stageStates)
     {
         // 空いている場所があればゲームオーバーにはならない
-        for (var row = 0; row < stageStates.GetLength(0); row++)
+        for (var row = 0; row < stageStates.GetLength(FirstDimension); row++)
         {
-            for (var col = 0; col < stageStates.GetLength(1); col++)
+            for (var col = 0; col < stageStates.GetLength(SecondDimension); col++)
             {
                 if (stageStates[row, col] <= 0)
                 {
@@ -238,9 +241,9 @@ public class InGamePresenter : MonoBehaviour
         }
 
         // 合成可能なマスが一つでもあればゲームオーバーにはならない
-        for (var row = 0; row < stageStates.GetLength(0); row++)
+        for (var row = 0; row < stageStates.GetLength(FirstDimension); row++)
         {
-            for (var col = 0; col < stageStates.GetLength(1); col++)
+            for (var col = 0; col < stageStates.GetLength(SecondDimension); col++)
             {
                 var state = stageStates[row, col];
                 var canMerge = false;
@@ -249,7 +252,7 @@ public class InGamePresenter : MonoBehaviour
                     canMerge |= state == stageStates[row - 1, col];
                 }
 
-                if (row < stageStates.GetLength(0) - 1)
+                if (row < stageStates.GetLength(FirstDimension) - 1)
                 {
                     canMerge |= state == stageStates[row + 1, col];
                 }
@@ -259,7 +262,7 @@ public class InGamePresenter : MonoBehaviour
                     canMerge |= state == stageStates[row, col - 1];
                 }
 
-                if (col < stageStates.GetLength(1) - 1)
+                if (col < stageStates.GetLength(SecondDimension) - 1)
                 {
                     canMerge |= state == stageStates[row, col + 1];
                 }
