@@ -42,7 +42,7 @@ public class InGamePresenter : MonoBehaviour
         var posA = new Vector2(Random.Range(0, StageSize), Random.Range(0, StageSize));
         var posB = new Vector2((posA.x + Random.Range(1, StageSize - 1)) % StageSize, (posA.y + Random.Range(1, StageSize - 1)) % StageSize);
         stageStates[(int)posA.x, (int)posA.y] = MinCellValue;
-        stageStates[(int)posB.x, (int)posB.y] = Random.Range(0, 1.0f) <  probability? MinCellValue : MinCellValue * 2;
+        stageStates[(int)posB.x, (int)posB.y] = Random.Range(0, 1.0f) <  Probability? MinCellValue : MinCellValue * 2;
 
         // ステージの初期状態をViewに反映
         for (var row = 0; row < StageSize; row++)
