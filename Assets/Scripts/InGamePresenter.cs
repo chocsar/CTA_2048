@@ -29,11 +29,11 @@ public class InGamePresenter : MonoBehaviour
         
 
         // ステージの初期状態を生成
-        for (var i = 0; i < stageSize; i++)
+        for (var row = 0; row < stageSize; row++)
         {
-            for (var j = 0; j < stageSize; j++)
+            for (var col = 0; col < stageSize; col++)
             {
-                stageStates[i, j] = 0;
+                stageStates[row, col] = 0;
             }
         }
         var posA = new Vector2(Random.Range(0, stageSize), Random.Range(0, stageSize));
@@ -42,11 +42,11 @@ public class InGamePresenter : MonoBehaviour
         stageStates[(int)posB.x, (int)posB.y] = Random.Range(0, 1.0f) <  probability? minCellValue : minCellValue * 2;
 
         // ステージの初期状態をViewに反映
-        for (var i = 0; i < stageSize; i++)
+        for (var row = 0; row < stageSize; row++)
         {
-            for (var j = 0; j < stageSize; j++)
+            for (var col = 0; col < stageSize; col++)
             {
-                cells[i * stageSize + j].SetText(stageStates[i, j]);
+                cells[row * stageSize + col].SetText(stageStates[row, col]);
             }
         }
     }
@@ -103,11 +103,11 @@ public class InGamePresenter : MonoBehaviour
         {
             CreateNewRandomCell();
 
-            for (var i = 0; i < stageSize; i++)
+            for (var row = 0; row < stageSize; row++)
             {
-                for (var j = 0; j < stageSize; j++)
+                for (var col = 0; col < stageSize; col++)
                 {
-                    cells[i * 4 + j].SetText(stageStates[i, j]);
+                    cells[row * 4 + col].SetText(stageStates[row, col]);
                 }
             }
 
@@ -226,11 +226,11 @@ public class InGamePresenter : MonoBehaviour
     private bool IsGameOver(int[,] stageStates)
     {
         // 空いている場所があればゲームオーバーにはならない
-        for (var i = 0; i < stageStates.GetLength(0); i++)
+        for (var row = 0; row < stageStates.GetLength(0); row++)
         {
-            for (var j = 0; j < stageStates.GetLength(1); j++)
+            for (var col = 0; col < stageStates.GetLength(1); col++)
             {
-                if (stageStates[i, j] <= 0)
+                if (stageStates[row, col] <= 0)
                 {
                     return false;
                 }
@@ -238,30 +238,30 @@ public class InGamePresenter : MonoBehaviour
         }
 
         // 合成可能なマスが一つでもあればゲームオーバーにはならない
-        for (var i = 0; i < stageStates.GetLength(0); i++)
+        for (var row = 0; row < stageStates.GetLength(0); row++)
         {
-            for (var j = 0; j < stageStates.GetLength(1); j++)
+            for (var col = 0; col < stageStates.GetLength(1); col++)
             {
-                var state = stageStates[i, j];
+                var state = stageStates[row, col];
                 var canMerge = false;
-                if (i > 0)
+                if (row > 0)
                 {
-                    canMerge |= state == stageStates[i - 1, j];
+                    canMerge |= state == stageStates[row - 1, col];
                 }
 
-                if (i < stageStates.GetLength(0) - 1)
+                if (row < stageStates.GetLength(0) - 1)
                 {
-                    canMerge |= state == stageStates[i + 1, j];
+                    canMerge |= state == stageStates[row + 1, col];
                 }
 
-                if (j > 0)
+                if (col > 0)
                 {
-                    canMerge |= state == stageStates[i, j - 1];
+                    canMerge |= state == stageStates[row, col - 1];
                 }
 
-                if (j < stageStates.GetLength(1) - 1)
+                if (col < stageStates.GetLength(1) - 1)
                 {
-                    canMerge |= state == stageStates[i, j + 1];
+                    canMerge |= state == stageStates[row, col + 1];
                 }
 
                 if (canMerge)
