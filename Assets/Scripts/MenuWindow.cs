@@ -13,7 +13,6 @@ public class MenuWindow : MonoBehaviour
     public void OpenWindow()
     {
         gameObject.SetActive(true);
-
     }
 
     /// <summary>
