@@ -9,11 +9,13 @@ public class InGamePresenter : MonoBehaviour
     private const int FirstDimension = 0;
     private const int SecondDimension = 1;
 
+    private readonly int[,] stageStates = new int[4, 4];
+
     private InGameModel inGameModel;
     private InGameView inGameView;
 
     [SerializeField] private Cell[] cells;
-    private readonly int[,] stageStates = new int[4, 4];
+    
 
     /// <summary>
     /// 盤面の再描画を行う必要があるかのフラグ
@@ -67,7 +69,7 @@ public class InGamePresenter : MonoBehaviour
             {
                 for (var row = 0; row < StageSize; row++)
                 {
-                    CheckCell(row, col, 1, 0);
+                    MoveCell(row, col, 1, 0);
                 }
             }
         }
@@ -77,7 +79,8 @@ public class InGamePresenter : MonoBehaviour
             {
                 for (var col = 0; col < StageSize; col++)
                 {
-                    CheckCell(row, col, -1, 0);
+                    MoveCell(row, col, -1, 0);
+                    
                 }
             }
         }
@@ -87,7 +90,7 @@ public class InGamePresenter : MonoBehaviour
             {
                 for (var col = 0; col < StageSize; col++)
                 {
-                    CheckCell(row, col, 0, -1);
+                    MoveCell(row, col, 0, -1);
                 }
             }
         }
@@ -97,7 +100,7 @@ public class InGamePresenter : MonoBehaviour
             {
                 for (var col = 0; col < StageSize; col++)
                 {
-                    CheckCell(row, col, 0, 1);
+                    MoveCell(row, col, 0, 1);
                 }
             }
         }
@@ -123,66 +126,34 @@ public class InGamePresenter : MonoBehaviour
 
     }
 
-    
-    
-
-    private bool CheckBorder(int row, int column, int horizontal, int vertical)
+    /// <summary>
+    /// 対象セルを移動させる
+    /// </summary>
+    /// <param name="row">対象セルの行</param>
+    /// <param name="col">対象セルの列</param>
+    /// <param name="horizontal">横方向の移動量</param>
+    /// <param name="vertical">縦方向の移動量</param>
+    private void MoveCell(int row, int col, int horizontal, int vertical)
     {
-        // チェックマスが4x4外ならそれ以上処理を行わない
-        if (row < 0 || row >= StageSize || column < 0 || column >= StageSize)
-        {
-            return false;
-        }
-
-        // 移動先が4x4外ならそれ以上処理は行わない
-        var nextRow = row + vertical;
-        var nextCol = column + horizontal;
-        if (nextRow < 0 || nextRow >= StageSize || nextCol < 0 || nextCol >= StageSize)
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-    private void CheckCell(int row, int column, int horizontal, int vertical)
-    {
-        // 4x4の境界線チェック
-        if (CheckBorder(row, column, horizontal, vertical) == false)
-        {
-            return;
-        }
-        // 空欄マスは移動処理をしない
-        if (stageStates[row, column] == 0)
-        {
-            return;
-        }
-        // 移動可能条件を満たした場合のみ移動処理
-        MoveCell(row, column, horizontal, vertical);
-    }
-
-    private void MoveCell(int row, int column, int horizontal, int vertical)
-    {
-        // 4x4境界線チェック
-        // 再起呼び出し以降も毎回境界線チェックはするため冒頭で呼び出しておく
-        if (CheckBorder(row, column, horizontal, vertical) == false)
+        //対象のセルが移動可能かどうか調べる
+        if (isOutsideStage(row, col) || isZeroState(row, col) || CheckBorder(row, col, horizontal, vertical) == false)
         {
             return;
         }
 
         // 移動先の位置を計算
         var nextRow = row + vertical;
-        var nextCol = column + horizontal;
+        var nextCol = col + horizontal;
 
         // 移動元と移動先の値を取得
-        var value = stageStates[row, column];
+        var value = stageStates[row, col];
         var nextValue = stageStates[nextRow, nextCol];
 
         // 次の移動先のマスが0の場合は移動する
         if (nextValue == 0)
         {
             // 移動元のマスは空欄になるので0を埋める
-            stageStates[row, column] = 0;
+            stageStates[row, col] = 0;
 
             // 移動先のマスに移動元のマスの値を代入する
             stageStates[nextRow, nextCol] = value;
@@ -193,7 +164,7 @@ public class InGamePresenter : MonoBehaviour
         // 同じ値のときは合成処理
         else if (value == nextValue)
         {
-            stageStates[row, column] = 0;
+            stageStates[row, col] = 0;
             stageStates[nextRow, nextCol] = value * 2;
             inGameModel.SetScore(value);
             
@@ -206,7 +177,62 @@ public class InGamePresenter : MonoBehaviour
 
         isDirty = true;
     }
+    
+    /// <summary>
+    /// 対象セルの状態がゼロかどうかを返す
+    /// </summary>
+    /// <param name="row">対象セルの行</param>
+    /// <param name="col">対象セルの列</param>
+    /// <returns>対象セルの状態がゼロかどうか</returns>
+    private bool isZeroState(int row, int col)
+    {
+        return stageStates[row, col] == 0;
+    }
+    
+    /// <summary>
+    /// 対象セルがステージ外かどうかを返す
+    /// </summary>
+    /// <param name="row">対象セルの行</param>
+    /// <param name="col">対象セルの列</param>
+    /// <returns>対象セルがステージ外かどうか</returns>
+    private bool isOutsideStage(int row, int col)
+    {
+        if (row < 0 || row >= StageSize || col < 0 || col >= StageSize)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
+    /// <summary>
+    /// 移動先がステージの外でないか調べる
+    /// </summary>
+    /// <param name="row">対象セルの行</param>
+    /// <param name="col">対象セルの列</param>
+    /// <param name="horizontal">横方向の移動量</param>
+    /// <param name="vertical">縦方向の移動量</param>
+    /// <returns>移動可能かどうか</returns>
+    private bool CheckBorder(int row, int col, int horizontal, int vertical)
+    {
+        // 移動先が4x4外ならそれ以上処理は行わない
+        var nextRow = row + vertical;
+        var nextCol = col + horizontal;
+        if (nextRow < 0 || nextRow >= StageSize || nextCol < 0 || nextCol >= StageSize)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    
+
+    /// <summary>
+    /// 
+    /// </summary>
     private void CreateNewRandomCell()
     {
         // ゲーム終了時はスポーンしない
@@ -226,6 +252,11 @@ public class InGamePresenter : MonoBehaviour
         stageStates[row, col] = Random.Range(0, 1f) < 0.5f ? 2 : 4;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="stageStates"></param>
+    /// <returns></returns>
     private bool IsGameOver(int[,] stageStates)
     {
         // 空いている場所があればゲームオーバーにはならない
@@ -276,7 +307,10 @@ public class InGamePresenter : MonoBehaviour
 
         return true;
     }
-
+    
+    /// <summary>
+    /// 
+    /// </summary>
     private void LoadResultScene()
     {
         SceneManager.LoadScene(SceneNames.Result);
