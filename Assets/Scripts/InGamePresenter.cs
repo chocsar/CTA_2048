@@ -15,14 +15,14 @@ public class InGamePresenter : MonoBehaviour
     private InGameView inGameView;
 
     [SerializeField] private Cell[] cells;
-    
+
 
     /// <summary>
     /// 盤面の再描画を行う必要があるかのフラグ
     /// </summary>
     private bool isDirty;
 
-    
+
 
     private void Start()
     {
@@ -31,7 +31,7 @@ public class InGamePresenter : MonoBehaviour
 
         // Modelの値の変更を監視する
         inGameModel.changeScore += inGameView.SetScore;
-        
+
 
         // ステージの初期状態を生成
         for (var row = 0; row < StageSize; row++)
@@ -44,7 +44,7 @@ public class InGamePresenter : MonoBehaviour
         var posA = new Vector2(Random.Range(0, StageSize), Random.Range(0, StageSize));
         var posB = new Vector2((posA.x + Random.Range(1, StageSize - 1)) % StageSize, (posA.y + Random.Range(1, StageSize - 1)) % StageSize);
         stageStates[(int)posA.x, (int)posA.y] = MinCellValue;
-        stageStates[(int)posB.x, (int)posB.y] = Random.Range(0, 1.0f) <  Probability? MinCellValue : MinCellValue * 2;
+        stageStates[(int)posB.x, (int)posB.y] = Random.Range(0, 1.0f) < Probability ? MinCellValue : MinCellValue * 2;
 
         // ステージの初期状態をViewに反映
         for (var row = 0; row < StageSize; row++)
@@ -56,7 +56,7 @@ public class InGamePresenter : MonoBehaviour
         }
     }
 
-    
+
 
     private void Update()
     {
@@ -80,7 +80,7 @@ public class InGamePresenter : MonoBehaviour
                 for (var col = 0; col < StageSize; col++)
                 {
                     MoveCell(row, col, -1, 0);
-                    
+
                 }
             }
         }
@@ -149,8 +149,13 @@ public class InGamePresenter : MonoBehaviour
         var value = stageStates[row, col];
         var nextValue = stageStates[nextRow, nextCol];
 
-        // 次の移動先のマスが0の場合は移動する
-        if (nextValue == 0)
+        // 次の移動先のマスが異なる値のときは移動処理を終了
+        if (value != nextValue)
+        {
+            return;
+        }
+        // 0の場合は移動する
+        else if (nextValue == 0)
         {
             // 移動元のマスは空欄になるので0を埋める
             stageStates[row, col] = 0;
@@ -164,20 +169,37 @@ public class InGamePresenter : MonoBehaviour
         // 同じ値のときは合成処理
         else if (value == nextValue)
         {
-            stageStates[row, col] = 0;
-            stageStates[nextRow, nextCol] = value * 2;
-            inGameModel.SetScore(value);
-            
-        }
-        // 異なる値のときは移動処理を終了
-        else if (value != nextValue)
-        {
-            return;
+            MergeCells(row, col, nextRow, nextCol, value);
+            SetScore(value);
         }
 
         isDirty = true;
     }
-    
+
+    /// <summary>
+    /// セルを合成する
+    /// </summary>
+    /// <param name="row">対象セル1の行</param>
+    /// <param name="col">対象セル1の列</param>
+    /// <param name="nextRow">対象セル2の行</param>
+    /// <param name="nextCol">対象セル2の列</param>
+    /// <param name="value">元の値</param>
+    private void MergeCells(int row, int col, int nextRow, int nextCol, int value)
+    {
+        stageStates[row, col] = 0;
+        stageStates[nextRow, nextCol] = value * 2;
+    }
+
+    /// <summary>
+    /// スコアを加算し、UIに反映させる
+    /// </summary>
+    /// <param name="cellValue">セルの値</param>
+    private void SetScore(int cellValue)
+    {
+        inGameModel.SetScore(cellValue);
+    }
+
+
     /// <summary>
     /// 対象セルの状態がゼロかどうかを返す
     /// </summary>
@@ -188,7 +210,7 @@ public class InGamePresenter : MonoBehaviour
     {
         return stageStates[row, col] == 0;
     }
-    
+
     /// <summary>
     /// 対象セルがステージ外かどうかを返す
     /// </summary>
@@ -228,7 +250,7 @@ public class InGamePresenter : MonoBehaviour
         return true;
     }
 
-    
+
 
     /// <summary>
     /// 
@@ -249,7 +271,7 @@ public class InGamePresenter : MonoBehaviour
             col = Random.Range(0, StageSize);
         }
 
-        stageStates[row, col] = Random.Range(0, 1f) < 0.5f ? 2 : 4;
+        stageStates[row, col] = Random.Range(0, 1f) < Probability ? 2 : 4;
     }
 
     /// <summary>
@@ -307,7 +329,7 @@ public class InGamePresenter : MonoBehaviour
 
         return true;
     }
-    
+
     /// <summary>
     /// 
     /// </summary>
