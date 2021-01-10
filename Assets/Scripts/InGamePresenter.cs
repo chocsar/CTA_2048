@@ -92,7 +92,7 @@ public class InGamePresenter : MonoBehaviour
             CreateNewRandomCell();
 
             //状態をステージに反映
-            ReflectStage();
+            ApplyStage();
 
             if (IsGameOver(stageStates))
             {
@@ -122,13 +122,13 @@ public class InGamePresenter : MonoBehaviour
         stageStates[(int)posA.x, (int)posA.y] = MinCellValue;
         stageStates[(int)posB.x, (int)posB.y] = Random.Range(0, 1.0f) < Probability ? MinCellValue : MinCellValue * 2;
 
-        ReflectStage();
+        ApplyStage();
     }
 
     /// <summary>
     /// ステージの状態を画面上に反映させる
     /// </summary>
-    private void ReflectStage()
+    private void ApplyStage()
     {
         for (var row = 0; row < StageSize; row++)
         {
