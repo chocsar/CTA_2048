@@ -37,7 +37,7 @@ public class InGamePresenter : MonoBehaviour
         InitStage();
 
         // ステージの初期状態をViewに反映
-        ReflectStage();
+        ApplyStage();
     }
 
     private void Update()
@@ -149,7 +149,7 @@ public class InGamePresenter : MonoBehaviour
     private void MoveCell(int row, int col, int horizontal, int vertical)
     {
         //対象のセルが移動可能かどうか調べる
-        if (isOutsideStage(row, col) || isZeroState(row, col) || CheckBorder(row, col, horizontal, vertical) == false)
+        if (IsOutsideStage(row, col) || IsZeroState(row, col) || CheckBorder(row, col, horizontal, vertical) == false)
         {
             return;
         }
@@ -225,7 +225,7 @@ public class InGamePresenter : MonoBehaviour
     /// <param name="row">対象セルの行</param>
     /// <param name="col">対象セルの列</param>
     /// <returns>対象セルの状態がゼロかどうか</returns>
-    private bool isZeroState(int row, int col)
+    private bool IsZeroState(int row, int col)
     {
         return stageStates[row, col] == 0;
     }
@@ -236,7 +236,7 @@ public class InGamePresenter : MonoBehaviour
     /// <param name="row">対象セルの行</param>
     /// <param name="col">対象セルの列</param>
     /// <returns>対象セルがステージ外かどうか</returns>
-    private bool isOutsideStage(int row, int col)
+    private bool IsOutsideStage(int row, int col)
     {
         if (row < 0 || row >= StageSize || col < 0 || col >= StageSize)
         {
