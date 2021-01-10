@@ -109,6 +109,7 @@ public class InGamePresenter : MonoBehaviour
         {
             CreateNewRandomCell();
 
+            //状態をステージに反映
             for (var row = 0; row < StageSize; row++)
             {
                 for (var col = 0; col < StageSize; col++)
@@ -119,7 +120,7 @@ public class InGamePresenter : MonoBehaviour
 
             if (IsGameOver(stageStates))
             {
-                PlayerPrefs.SetInt(PlayerPrefsKeys.Score, inGameModel.GetScore());
+                SaveScore(inGameModel.GetScore());
                 LoadResultScene();
             }
         }
@@ -199,6 +200,11 @@ public class InGamePresenter : MonoBehaviour
         inGameModel.SetScore(cellValue);
     }
 
+    private void SaveScore(int score)
+    {
+        PlayerPrefs.SetInt(PlayerPrefsKeys.Score, score);
+    }
+
 
     /// <summary>
     /// 対象セルの状態がゼロかどうかを返す
@@ -253,7 +259,7 @@ public class InGamePresenter : MonoBehaviour
 
 
     /// <summary>
-    /// 
+    /// セルを新しく生成する
     /// </summary>
     private void CreateNewRandomCell()
     {
@@ -263,6 +269,7 @@ public class InGamePresenter : MonoBehaviour
             return;
         }
 
+        //ランダムな箇所にセルを作成
         var row = Random.Range(0, StageSize);
         var col = Random.Range(0, StageSize);
         while (stageStates[row, col] != 0)
@@ -270,15 +277,14 @@ public class InGamePresenter : MonoBehaviour
             row = Random.Range(0, StageSize);
             col = Random.Range(0, StageSize);
         }
-
         stageStates[row, col] = Random.Range(0, 1f) < Probability ? 2 : 4;
     }
 
     /// <summary>
-    /// 
+    /// ゲームオーバーかどうか調べる
     /// </summary>
-    /// <param name="stageStates"></param>
-    /// <returns></returns>
+    /// <param name="stageStates">ステージの状態</param>
+    /// <returns>ゲームオーバーかどうか</returns>
     private bool IsGameOver(int[,] stageStates)
     {
         // 空いている場所があればゲームオーバーにはならない
@@ -331,7 +337,7 @@ public class InGamePresenter : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// リザルトシーンへ遷移する
     /// </summary>
     private void LoadResultScene()
     {
