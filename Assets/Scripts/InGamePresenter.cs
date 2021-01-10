@@ -34,29 +34,11 @@ public class InGamePresenter : MonoBehaviour
 
 
         // ステージの初期状態を生成
-        for (var row = 0; row < StageSize; row++)
-        {
-            for (var col = 0; col < StageSize; col++)
-            {
-                stageStates[row, col] = 0;
-            }
-        }
-        var posA = new Vector2(Random.Range(0, StageSize), Random.Range(0, StageSize));
-        var posB = new Vector2((posA.x + Random.Range(1, StageSize - 1)) % StageSize, (posA.y + Random.Range(1, StageSize - 1)) % StageSize);
-        stageStates[(int)posA.x, (int)posA.y] = MinCellValue;
-        stageStates[(int)posB.x, (int)posB.y] = Random.Range(0, 1.0f) < Probability ? MinCellValue : MinCellValue * 2;
+        InitStage();
 
         // ステージの初期状態をViewに反映
-        for (var row = 0; row < StageSize; row++)
-        {
-            for (var col = 0; col < StageSize; col++)
-            {
-                cells[row * StageSize + col].SetText(stageStates[row, col]);
-            }
-        }
+        ReflectStage();
     }
-
-
 
     private void Update()
     {
@@ -110,13 +92,7 @@ public class InGamePresenter : MonoBehaviour
             CreateNewRandomCell();
 
             //状態をステージに反映
-            for (var row = 0; row < StageSize; row++)
-            {
-                for (var col = 0; col < StageSize; col++)
-                {
-                    cells[row * 4 + col].SetText(stageStates[row, col]);
-                }
-            }
+            ReflectStage();
 
             if (IsGameOver(stageStates))
             {
@@ -125,6 +101,42 @@ public class InGamePresenter : MonoBehaviour
             }
         }
 
+    }
+
+    /// <summary>
+    /// ステージの初期状態を作成する
+    /// </summary>
+    private void InitStage()
+    {
+        for (var row = 0; row < StageSize; row++)
+        {
+            for (var col = 0; col < StageSize; col++)
+            {
+                stageStates[row, col] = 0;
+            }
+        }
+
+        //セルを新規作成
+        var posA = new Vector2(Random.Range(0, StageSize), Random.Range(0, StageSize));
+        var posB = new Vector2((posA.x + Random.Range(1, StageSize - 1)) % StageSize, (posA.y + Random.Range(1, StageSize - 1)) % StageSize);
+        stageStates[(int)posA.x, (int)posA.y] = MinCellValue;
+        stageStates[(int)posB.x, (int)posB.y] = Random.Range(0, 1.0f) < Probability ? MinCellValue : MinCellValue * 2;
+
+        ReflectStage();
+    }
+
+    /// <summary>
+    /// ステージの状態を画面上に反映させる
+    /// </summary>
+    private void ReflectStage()
+    {
+        for (var row = 0; row < StageSize; row++)
+        {
+            for (var col = 0; col < StageSize; col++)
+            {
+                cells[row * StageSize + col].SetText(stageStates[row, col]);
+            }
+        }
     }
 
     /// <summary>
