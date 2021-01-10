@@ -162,13 +162,9 @@ public class InGamePresenter : MonoBehaviour
         var value = stageStates[row, col];
         var nextValue = stageStates[nextRow, nextCol];
 
-        // 次の移動先のマスが異なる値のときは移動処理を終了
-        if (value != nextValue)
-        {
-            return;
-        }
-        // 0の場合は移動する
-        else if (nextValue == 0)
+
+        // 次の移動先のマスが0の場合は移動する
+        if (nextValue == 0)
         {
             // 移動元のマスは空欄になるので0を埋める
             stageStates[row, col] = 0;
@@ -179,11 +175,16 @@ public class InGamePresenter : MonoBehaviour
             // 移動先のマスでさらに移動チェック
             MoveCell(nextRow, nextCol, horizontal, vertical);
         }
-        // 同じ値のときは合成処理
+        // 同じ値のときは合成してスコア反映
         else if (value == nextValue)
         {
             MergeCells(row, col, nextRow, nextCol, value);
             SetScore(value);
+        }
+        // 異なる値のときは移動処理を終了
+        else if (value != nextValue)
+        {
+            return;
         }
 
         isDirty = true;
