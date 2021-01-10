@@ -149,7 +149,7 @@ public class InGamePresenter : MonoBehaviour
     private void MoveCell(int row, int col, int horizontal, int vertical)
     {
         //対象のセルが移動可能かどうか調べる
-        if (IsOutsideStage(row, col) || IsZeroState(row, col) || CheckBorder(row, col, horizontal, vertical) == false)
+        if (IsOutsideStage(row, col) || IsZeroState(row, col))
         {
             return;
         }
@@ -157,6 +157,8 @@ public class InGamePresenter : MonoBehaviour
         // 移動先の位置を計算
         var nextRow = row + vertical;
         var nextCol = col + horizontal;
+
+        if (IsOutsideStage(nextRow, nextCol)) { return; }
 
         // 移動元と移動先の値を取得
         var value = stageStates[row, col];
@@ -213,6 +215,10 @@ public class InGamePresenter : MonoBehaviour
         inGameModel.SetScore(cellValue);
     }
 
+    /// <summary>
+    /// スコアをセーブする
+    /// </summary>
+    /// <param name="score">スコア</param>
     private void SaveScore(int score)
     {
         PlayerPrefs.SetInt(PlayerPrefsKeys.Score, score);
@@ -242,31 +248,8 @@ public class InGamePresenter : MonoBehaviour
         {
             return true;
         }
-        else
-        {
-            return false;
-        }
-    }
 
-    /// <summary>
-    /// 移動先がステージの外でないか調べる
-    /// </summary>
-    /// <param name="row">対象セルの行</param>
-    /// <param name="col">対象セルの列</param>
-    /// <param name="horizontal">横方向の移動量</param>
-    /// <param name="vertical">縦方向の移動量</param>
-    /// <returns>移動可能かどうか</returns>
-    private bool CheckBorder(int row, int col, int horizontal, int vertical)
-    {
-        // 移動先が4x4外ならそれ以上処理は行わない
-        var nextRow = row + vertical;
-        var nextCol = col + horizontal;
-        if (nextRow < 0 || nextRow >= StageSize || nextCol < 0 || nextCol >= StageSize)
-        {
-            return false;
-        }
-
-        return true;
+        return false;
     }
 
 
