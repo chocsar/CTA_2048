@@ -45,47 +45,7 @@ public class InGamePresenter : MonoBehaviour
 
         isDirty = false;
 
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            for (var col = StageSize; col >= 0; col--)
-            {
-                for (var row = 0; row < StageSize; row++)
-                {
-                    MoveCell(row, col, 1, 0);
-                }
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            for (var row = 0; row < StageSize; row++)
-            {
-                for (var col = 0; col < StageSize; col++)
-                {
-                    MoveCell(row, col, -1, 0);
-
-                }
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            for (var row = 0; row < StageSize; row++)
-            {
-                for (var col = 0; col < StageSize; col++)
-                {
-                    MoveCell(row, col, 0, -1);
-                }
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            for (var row = StageSize; row >= 0; row--)
-            {
-                for (var col = 0; col < StageSize; col++)
-                {
-                    MoveCell(row, col, 0, 1);
-                }
-            }
-        }
+        InputKey();
 
         if (isDirty)
         {
@@ -135,6 +95,53 @@ public class InGamePresenter : MonoBehaviour
             for (var col = 0; col < StageSize; col++)
             {
                 cells[row * StageSize + col].SetText(stageStates[row, col]);
+            }
+        }
+    }
+
+    /// <summary>
+    /// キー入力を受け付けて、セルを移動させる
+    /// </summary>
+    private void InputKey()
+    {
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            for (var col = StageSize; col >= 0; col--)
+            {
+                for (var row = 0; row < StageSize; row++)
+                {
+                    MoveCell(row, col, 1, 0);
+                }
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            for (var row = 0; row < StageSize; row++)
+            {
+                for (var col = 0; col < StageSize; col++)
+                {
+                    MoveCell(row, col, -1, 0);
+                }
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            for (var row = 0; row < StageSize; row++)
+            {
+                for (var col = 0; col < StageSize; col++)
+                {
+                    MoveCell(row, col, 0, -1);
+                }
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            for (var row = StageSize; row >= 0; row--)
+            {
+                for (var col = 0; col < StageSize; col++)
+                {
+                    MoveCell(row, col, 0, 1);
+                }
             }
         }
     }
