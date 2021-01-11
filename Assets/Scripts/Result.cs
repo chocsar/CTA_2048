@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Result : MonoBehaviour
@@ -9,11 +8,11 @@ public class Result : MonoBehaviour
 
     private void Start()
     {
-        resultText.text = PlayerPrefs.GetInt(PlayerPrefsKeys.Score, 0).ToString();
+        resultText.text = ScoreManager.Instance.LoadScore().ToString();
     }
 
     public void OnClickRetryButton()
     {
-        SceneManager.LoadScene(SceneNames.InGame);
+        SceneController.Instance.LoadScene(SceneNames.InGame);
     }
 }

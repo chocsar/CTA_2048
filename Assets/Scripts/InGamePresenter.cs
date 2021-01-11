@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class InGamePresenter : MonoBehaviour
 {
@@ -228,7 +227,7 @@ public class InGamePresenter : MonoBehaviour
     /// <param name="score">スコア</param>
     private void SaveScore(int score)
     {
-        PlayerPrefs.SetInt(PlayerPrefsKeys.Score, score);
+        ScoreManager.Instance.SaveScore(score);
     }
 
 
@@ -344,7 +343,7 @@ public class InGamePresenter : MonoBehaviour
     /// </summary>
     private void LoadResultScene()
     {
-        SceneManager.LoadScene(SceneNames.Result);
+        SceneController.Instance.LoadScene(SceneNames.Result);
     }
 
 }
