@@ -227,7 +227,7 @@ public class InGamePresenter : MonoBehaviour
     /// <param name="score">スコア</param>
     private void SaveScore(int score)
     {
-        PlayerPrefs.SetInt(PlayerPrefsKeys.Score, score);
+        ScoreManager.Instance.SaveScore(score);
     }
 
 
