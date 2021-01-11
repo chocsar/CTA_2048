@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Title : MonoBehaviour
 {
-
     public void LoadInGameScene()
     {
         SceneController.Instance.LoadScene(SceneNames.InGame);
