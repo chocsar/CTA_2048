@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class InGamePresenter : MonoBehaviour
 {
@@ -344,7 +343,7 @@ public class InGamePresenter : MonoBehaviour
     /// </summary>
     private void LoadResultScene()
     {
-        SceneManager.LoadScene(SceneNames.Result);
+        SceneController.Instance.LoadScene(SceneNames.Result);
     }
 
 }
