@@ -13,6 +13,7 @@ public class InGamePresenter : MonoBehaviour
     private InGameModel inGameModel;
     private InGameView inGameView;
 
+
     [SerializeField] private Cell[] cells;
 
 
@@ -31,6 +32,11 @@ public class InGamePresenter : MonoBehaviour
         // Modelの値の変更を監視する
         inGameModel.changeScore += inGameView.SetScore;
 
+        // Viewの入力を監視する
+        inGameView.InputRightKey += InputRightKey;
+        inGameView.InputLeftKey += InputLeftKey;
+        inGameView.InputUpKey += InputUpKey;
+        inGameView.InputDownKey += InputDownKey;
 
         // ステージの初期状態を生成
         InitStage();
@@ -44,7 +50,7 @@ public class InGamePresenter : MonoBehaviour
 
         isDirty = false;
 
-        InputKey();
+        //InputKey();
 
         if (isDirty)
         {
@@ -141,6 +147,50 @@ public class InGamePresenter : MonoBehaviour
                 {
                     MoveCell(row, col, 0, 1);
                 }
+            }
+        }
+    }
+
+    private void InputRightKey()
+    {
+        for (var col = StageSize; col >= 0; col--)
+        {
+            for (var row = 0; row < StageSize; row++)
+            {
+                MoveCell(row, col, 1, 0);
+            }
+        }
+    }
+
+    private void InputLeftKey()
+    {
+        for (var row = 0; row < StageSize; row++)
+        {
+            for (var col = 0; col < StageSize; col++)
+            {
+                MoveCell(row, col, -1, 0);
+            }
+        }
+    }
+
+    private void InputUpKey()
+    {
+        for (var row = 0; row < StageSize; row++)
+        {
+            for (var col = 0; col < StageSize; col++)
+            {
+                MoveCell(row, col, 0, -1);
+            }
+        }
+    }
+
+    private void InputDownKey()
+    {
+        for (var row = StageSize; row >= 0; row--)
+        {
+            for (var col = 0; col < StageSize; col++)
+            {
+                MoveCell(row, col, 0, 1);
             }
         }
     }
