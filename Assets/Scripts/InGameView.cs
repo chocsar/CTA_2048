@@ -30,19 +30,20 @@ public class InGameView : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            InputRightKey();
+            //nullチェック
+            InputRightKey?.Invoke();
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            InputLeftKey();
+            InputLeftKey?.Invoke();
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            InputUpKey();
+            InputUpKey?.Invoke();
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            InputDownKey();
+            InputDownKey?.Invoke();
         }
     }
 
