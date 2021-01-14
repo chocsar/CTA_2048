@@ -46,7 +46,7 @@ public class InGameModel : MonoBehaviour
         stageStates[(int)posB.x, (int)posB.y] = UnityEngine.Random.Range(0, 1.0f) < Probability ? MinCellValue : MinCellValue * 2;
 
         //ステージの状態を画面に反映
-        ApplyStage(stageStates);
+        ApplyStage?.Invoke(stageStates);
     }
 
     public void MoveCellRight()
@@ -63,10 +63,10 @@ public class InGameModel : MonoBehaviour
         if (isDirty)
         {
             CreateNewRandomCell();
-            ApplyStage(stageStates);
+            ApplyStage?.Invoke(stageStates);
             if (IsGameOver(stageStates))
             {
-                GameOver();
+                GameOver?.Invoke();
             }
         }
     }
@@ -85,10 +85,10 @@ public class InGameModel : MonoBehaviour
         if (isDirty)
         {
             CreateNewRandomCell();
-            ApplyStage(stageStates);
+            ApplyStage?.Invoke(stageStates);
             if (IsGameOver(stageStates))
             {
-                GameOver();
+                GameOver?.Invoke();
             }
         }
     }
@@ -107,10 +107,10 @@ public class InGameModel : MonoBehaviour
         if (isDirty)
         {
             CreateNewRandomCell();
-            ApplyStage(stageStates);
+            ApplyStage?.Invoke(stageStates);
             if (IsGameOver(stageStates))
             {
-                GameOver();
+                GameOver?.Invoke();
             }
         }
     }
@@ -129,10 +129,10 @@ public class InGameModel : MonoBehaviour
         if (isDirty)
         {
             CreateNewRandomCell();
-            ApplyStage(stageStates);
+            ApplyStage?.Invoke(stageStates);
             if (IsGameOver(stageStates))
             {
-                GameOver();
+                GameOver?.Invoke();
             }
         }
     }
@@ -316,7 +316,7 @@ public class InGameModel : MonoBehaviour
     public void SetScore(int cellValue)
     {
         score += cellValue * 2;
-        ChangeScore(score);
+        ChangeScore?.Invoke(score);
     }
 
     public int GetScore() { return score; }
