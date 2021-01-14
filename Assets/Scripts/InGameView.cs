@@ -4,28 +4,25 @@ using System;
 
 public class InGameView : MonoBehaviour
 {
+    private const int StageSize = 4;
+
     public event Action InputRightKey;
     public event Action InputLeftKey;
     public event Action InputUpKey;
     public event Action InputDownKey;
 
+    [SerializeField] private Cell[] cells;
     [SerializeField] private Text scoreText;
 
-    private void Start()
-    {
-
-    }
 
     private void Update()
     {
         InputKey();
     }
 
-    public void SetScore(int score)
-    {
-        scoreText.text = $"Score: {score}";
-    }
-
+    /// <summary>
+    /// ユーザーからのキー入力を受け取る
+    /// </summary>
     private void InputKey()
     {
         if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -45,6 +42,25 @@ public class InGameView : MonoBehaviour
         {
             InputDownKey?.Invoke();
         }
+    }
+
+    /// <summary>
+    /// ステージの状態を画面上に反映させる
+    /// </summary>
+    public void ApplyStage(int[,] stageStates)
+    {
+        for (var row = 0; row < StageSize; row++)
+        {
+            for (var col = 0; col < StageSize; col++)
+            {
+                cells[row * StageSize + col].SetText(stageStates[row, col]);
+            }
+        }
+    }
+
+    public void SetScore(int score)
+    {
+        scoreText.text = $"Score: {score}";
     }
 
 }
