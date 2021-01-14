@@ -9,11 +9,17 @@ public class InGameModel : MonoBehaviour
     private const float Probability = 0.5f;
     private const int FirstDimension = 0;
     private const int SecondDimension = 1;
-    private int score;
 
     public event Action<int> ChangeScore;
     public event Action<int[,]> ApplyStage;
     public event Action GameOver;
+
+    private int score;
+
+    /// <summary>
+    /// 盤面の再描画を行う必要があるかのフラグ
+    /// </summary>
+    private bool isDirty;
 
 
     /// <summary>
@@ -45,6 +51,8 @@ public class InGameModel : MonoBehaviour
 
     public void MoveCellRight()
     {
+        isDirty = false;
+
         for (var col = StageSize; col >= 0; col--)
         {
             for (var row = 0; row < StageSize; row++)
@@ -52,16 +60,20 @@ public class InGameModel : MonoBehaviour
                 MoveCell(row, col, 1, 0);
             }
         }
-
-        CreateNewRandomCell();
-        ApplyStage(stageStates);
-        if (IsGameOver(stageStates))
+        if (isDirty)
         {
-            GameOver();
+            CreateNewRandomCell();
+            ApplyStage(stageStates);
+            if (IsGameOver(stageStates))
+            {
+                GameOver();
+            }
         }
     }
     public void MoveCellLeft()
     {
+        isDirty = false;
+
         for (var row = 0; row < StageSize; row++)
         {
             for (var col = 0; col < StageSize; col++)
@@ -70,15 +82,20 @@ public class InGameModel : MonoBehaviour
             }
         }
 
-        CreateNewRandomCell();
-        ApplyStage(stageStates);
-        if (IsGameOver(stageStates))
+        if (isDirty)
         {
-            GameOver();
+            CreateNewRandomCell();
+            ApplyStage(stageStates);
+            if (IsGameOver(stageStates))
+            {
+                GameOver();
+            }
         }
     }
     public void MoveCellUp()
     {
+        isDirty = false;
+
         for (var row = 0; row < StageSize; row++)
         {
             for (var col = 0; col < StageSize; col++)
@@ -87,15 +104,20 @@ public class InGameModel : MonoBehaviour
             }
         }
 
-        CreateNewRandomCell();
-        ApplyStage(stageStates);
-        if (IsGameOver(stageStates))
+        if (isDirty)
         {
-            GameOver();
+            CreateNewRandomCell();
+            ApplyStage(stageStates);
+            if (IsGameOver(stageStates))
+            {
+                GameOver();
+            }
         }
     }
     public void MoveCellDown()
     {
+        isDirty = false;
+
         for (var row = StageSize; row >= 0; row--)
         {
             for (var col = 0; col < StageSize; col++)
@@ -104,11 +126,14 @@ public class InGameModel : MonoBehaviour
             }
         }
 
-        CreateNewRandomCell();
-        ApplyStage(stageStates);
-        if (IsGameOver(stageStates))
+        if (isDirty)
         {
-            GameOver();
+            CreateNewRandomCell();
+            ApplyStage(stageStates);
+            if (IsGameOver(stageStates))
+            {
+                GameOver();
+            }
         }
     }
 
@@ -138,7 +163,6 @@ public class InGameModel : MonoBehaviour
         var value = stageStates[row, col];
         var nextValue = stageStates[nextRow, nextCol];
 
-
         // 次の移動先のマスが0の場合は移動する
         if (nextValue == 0)
         {
@@ -163,6 +187,7 @@ public class InGameModel : MonoBehaviour
             return;
         }
 
+        isDirty = true;
     }
 
     /// <summary>
