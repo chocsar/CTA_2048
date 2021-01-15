@@ -321,6 +321,15 @@ public class InGameModel : MonoBehaviour
 
     public int GetScore() { return score; }
 
+    /// <summary>
+    /// スコアを0にする
+    /// </summary>
+    public void ResetScore()
+    {
+        score = 0;
+        ChangeScore?.Invoke(score);
+    }
+
 
 
 }

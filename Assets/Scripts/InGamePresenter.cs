@@ -64,7 +64,9 @@ public class InGamePresenter : MonoBehaviour
     /// </summary>
     private void RestartGame()
     {
-        ReloadScene();
+        inGameModel.InitStage();
+        inGameModel.ResetScore();
+        menuWindowView.CloseWindow();
     }
 
     /// <summary>
@@ -84,12 +86,5 @@ public class InGamePresenter : MonoBehaviour
         SceneController.Instance.LoadScene(SceneNames.Result);
     }
 
-    /// <summary>
-    /// シーンをリロードする
-    /// </summary>
-    private void ReloadScene()
-    {
-        SceneController.Instance.LoadScene(SceneNames.InGame);
-    }
 
 }
