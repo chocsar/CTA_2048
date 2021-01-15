@@ -4,11 +4,13 @@ public class InGamePresenter : MonoBehaviour
 {
     private InGameModel inGameModel;
     private InGameView inGameView;
+    private MenuWindowView menuWindowView;
 
     private void Start()
     {
         inGameModel = GetComponent<InGameModel>();
         inGameView = GetComponent<InGameView>();
+        menuWindowView = GetComponent<MenuWindowView>();
 
         // Modelの値の変更を監視する
         inGameModel.ChangeScore += inGameView.SetScore;
@@ -16,14 +18,36 @@ public class InGamePresenter : MonoBehaviour
         inGameModel.GameOver += GameOver;
 
         // Viewの入力を監視する
-        inGameView.InputRightKey += inGameModel.MoveCellRight;
-        inGameView.InputLeftKey += inGameModel.MoveCellLeft;
-        inGameView.InputUpKey += inGameModel.MoveCellUp;
-        inGameView.InputDownKey += inGameModel.MoveCellDown;
+        inGameView.InputRightKey += MoveCellRight;
+        inGameView.InputLeftKey += MoveCellLeft;
+        inGameView.InputUpKey += MoveCellUp;
+        inGameView.InputDownKey += MoveCellDown;
+        menuWindowView.OnClickRestartButton += RestartGame;
 
         // ステージの初期状態を生成
         inGameModel.InitStage();
 
+    }
+
+    private void MoveCellRight()
+    {
+        if (menuWindowView.IsActive()) { return; }
+        inGameModel.MoveCellRight();
+    }
+    private void MoveCellLeft()
+    {
+        if (menuWindowView.IsActive()) { return; }
+        inGameModel.MoveCellLeft();
+    }
+    private void MoveCellUp()
+    {
+        if (menuWindowView.IsActive()) { return; }
+        inGameModel.MoveCellUp();
+    }
+    private void MoveCellDown()
+    {
+        if (menuWindowView.IsActive()) { return; }
+        inGameModel.MoveCellDown();
     }
 
     /// <summary>
@@ -31,8 +55,16 @@ public class InGamePresenter : MonoBehaviour
     /// </summary>
     private void GameOver()
     {
-        SaveScore(inGameModel.GetScore()); //引数を渡すのと何が違う？
+        SaveScore(inGameModel.GetScore());
         LoadResultScene();
+    }
+
+    /// <summary>
+    /// ゲームをリスタートする
+    /// </summary>
+    private void RestartGame()
+    {
+        ReloadScene();
     }
 
     /// <summary>
@@ -50,6 +82,14 @@ public class InGamePresenter : MonoBehaviour
     private void LoadResultScene()
     {
         SceneController.Instance.LoadScene(SceneNames.Result);
+    }
+
+    /// <summary>
+    /// シーンをリロードする
+    /// </summary>
+    private void ReloadScene()
+    {
+        SceneController.Instance.LoadScene(SceneNames.InGame);
     }
 
 }
