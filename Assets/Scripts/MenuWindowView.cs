@@ -5,8 +5,6 @@ using UnityEngine;
 public class MenuWindowView : MonoBehaviour
 {
     public event Action OnClickRestartButton;
-    [SerializeField] private GameObject menuWindow;
-
 
     private void Start()
     {
@@ -18,7 +16,7 @@ public class MenuWindowView : MonoBehaviour
     /// </summary>
     public void OpenWindow()
     {
-        menuWindow.SetActive(true);
+        gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -26,7 +24,7 @@ public class MenuWindowView : MonoBehaviour
     /// </summary>
     public void CloseWindow()
     {
-        menuWindow.SetActive(false);
+        gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -43,7 +41,7 @@ public class MenuWindowView : MonoBehaviour
     /// <returns></returns>
     public bool IsOpenWindow()
     {
-        return menuWindow.activeSelf;
+        return gameObject.activeSelf;
     }
 
 }
