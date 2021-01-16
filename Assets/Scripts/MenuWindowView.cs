@@ -7,14 +7,9 @@ public class MenuWindowView : MonoBehaviour
     public event Action OnClickRestartButton;
     [SerializeField] private GameObject menuWindow;
 
-    /// <summary>
-    /// メニューが表示されているかどうか
-    /// </summary>
-    private bool isActive;
 
     private void Start()
     {
-        //初期化
         CloseWindow();
     }
 
@@ -24,7 +19,6 @@ public class MenuWindowView : MonoBehaviour
     public void OpenWindow()
     {
         menuWindow.SetActive(true);
-        isActive = true;
     }
 
     /// <summary>
@@ -33,7 +27,6 @@ public class MenuWindowView : MonoBehaviour
     public void CloseWindow()
     {
         menuWindow.SetActive(false);
-        isActive = false;
     }
 
     /// <summary>
@@ -48,9 +41,9 @@ public class MenuWindowView : MonoBehaviour
     /// メニューが表示されているかどうかを返す
     /// </summary>
     /// <returns></returns>
-    public bool IsActive()
+    public bool IsOpenWindow()
     {
-        return isActive;
+        return menuWindow.activeSelf;
     }
 
 }
