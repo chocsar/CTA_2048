@@ -26,6 +26,7 @@ public class InGamePresenter : MonoBehaviour
 
         // ステージの初期状態を生成
         inGameModel.InitStage();
+        inGameModel.ResetScore();
 
     }
 
