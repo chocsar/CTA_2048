@@ -4,6 +4,7 @@ public class InGamePresenter : MonoBehaviour
 {
     private InGameModel inGameModel;
     private InGameView inGameView;
+    [SerializeField] private MenuWindowView menuWindowView;
 
     private void Start()
     {
@@ -16,14 +17,39 @@ public class InGamePresenter : MonoBehaviour
         inGameModel.GameOver += GameOver;
 
         // Viewの入力を監視する
-        inGameView.InputRightKey += inGameModel.MoveCellRight;
-        inGameView.InputLeftKey += inGameModel.MoveCellLeft;
-        inGameView.InputUpKey += inGameModel.MoveCellUp;
-        inGameView.InputDownKey += inGameModel.MoveCellDown;
+        inGameView.InputRightKey += MoveCellRight;
+        inGameView.InputLeftKey += MoveCellLeft;
+        inGameView.InputUpKey += MoveCellUp;
+        inGameView.InputDownKey += MoveCellDown;
+        inGameView.OnClickMenuButton += menuWindowView.OpenWindow;
+        menuWindowView.OnClickRestartButton += RestartGame;
 
         // ステージの初期状態を生成
         inGameModel.InitStage();
+        inGameModel.ResetScore();
 
+
+    }
+
+    private void MoveCellRight()
+    {
+        if (menuWindowView.IsOpenWindow()) return;
+        inGameModel.MoveCellRight();
+    }
+    private void MoveCellLeft()
+    {
+        if (menuWindowView.IsOpenWindow()) return;
+        inGameModel.MoveCellLeft();
+    }
+    private void MoveCellUp()
+    {
+        if (menuWindowView.IsOpenWindow()) return;
+        inGameModel.MoveCellUp();
+    }
+    private void MoveCellDown()
+    {
+        if (menuWindowView.IsOpenWindow()) return;
+        inGameModel.MoveCellDown();
     }
 
     /// <summary>
@@ -31,8 +57,18 @@ public class InGamePresenter : MonoBehaviour
     /// </summary>
     private void GameOver()
     {
-        SaveScore(inGameModel.GetScore()); //引数を渡すのと何が違う？
+        SaveScore(inGameModel.GetScore());
         LoadResultScene();
+    }
+
+    /// <summary>
+    /// ゲームをリスタートする
+    /// </summary>
+    private void RestartGame()
+    {
+        inGameModel.InitStage();
+        inGameModel.ResetScore();
+        menuWindowView.CloseWindow();
     }
 
     /// <summary>
@@ -51,5 +87,6 @@ public class InGamePresenter : MonoBehaviour
     {
         SceneController.Instance.LoadScene(SceneNames.Result);
     }
+
 
 }

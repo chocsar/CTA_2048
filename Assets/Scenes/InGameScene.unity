@@ -616,7 +616,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 156375517}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2059380210}
+        m_MethodName: ClickRestartButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &156375517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -922,8 +933,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2059380210}
-        m_MethodName: OpenWindow
+      - m_Target: {fileID: 1449061364}
+        m_MethodName: ClickMenuButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2715,7 +2726,7 @@ GameObject:
   - component: {fileID: 985248759}
   - component: {fileID: 985248758}
   m_Layer: 5
-  m_Name: ' CloseButton'
+  m_Name: CloseButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3981,6 +3992,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93ce44114574244e78880564fb918b54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  menuWindowView: {fileID: 2059380210}
 --- !u!114 &1449061364
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5549,7 +5561,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 2059380206}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4452e568f262d4a2eb9f1849aecd9d0e, type: 3}
+  m_Script: {fileID: 11500000, guid: 0963c22fde38c4480b5ccaf19d28b4e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  closeButton: {fileID: 0}

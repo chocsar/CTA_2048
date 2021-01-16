@@ -10,6 +10,7 @@ public class InGameView : MonoBehaviour
     public event Action InputLeftKey;
     public event Action InputUpKey;
     public event Action InputDownKey;
+    public event Action OnClickMenuButton;
 
     [SerializeField] private Cell[] cells;
     [SerializeField] private Text scoreText;
@@ -61,6 +62,11 @@ public class InGameView : MonoBehaviour
     public void SetScore(int score)
     {
         scoreText.text = $"Score: {score}";
+    }
+
+    public void ClickMenuButton()
+    {
+        OnClickMenuButton?.Invoke();
     }
 
 }
