@@ -21,12 +21,13 @@ public class InGamePresenter : MonoBehaviour
         inGameView.InputLeftKey += MoveCellLeft;
         inGameView.InputUpKey += MoveCellUp;
         inGameView.InputDownKey += MoveCellDown;
-        inGameView.OnClickMenuButton += OpenWindow;
+        inGameView.OnClickMenuButton += menuWindowView.OpenWindow;
         menuWindowView.OnClickRestartButton += RestartGame;
 
         // ステージの初期状態を生成
         inGameModel.InitStage();
         inGameModel.ResetScore();
+
 
     }
 
@@ -85,14 +86,6 @@ public class InGamePresenter : MonoBehaviour
     private void LoadResultScene()
     {
         SceneController.Instance.LoadScene(SceneNames.Result);
-    }
-
-    /// <summary>
-    /// メニューウィンドウを表示する
-    /// </summary>
-    public void OpenWindow()
-    {
-        menuWindowView.gameObject.SetActive(true);
     }
 
 

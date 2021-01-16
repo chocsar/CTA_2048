@@ -15,6 +15,14 @@ public class MenuWindowView : MonoBehaviour
     }
 
     /// <summary>
+    /// Windowを表示する
+    /// </summary>
+    public void OpenWindow()
+    {
+        gameObject.SetActive(true);
+    }
+
+    /// <summary>
     /// リスタートボタンを押した時の処理
     /// </summary>
     public void ClickRestartButton()
