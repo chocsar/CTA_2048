@@ -12,14 +12,6 @@ public class MenuWindowView : MonoBehaviour
     }
 
     /// <summary>
-    /// Windowを表示する
-    /// </summary>
-    public void OpenWindow()
-    {
-        gameObject.SetActive(true);
-    }
-
-    /// <summary>
     /// Windowを非表示にする
     /// </summary>
     public void CloseWindow()

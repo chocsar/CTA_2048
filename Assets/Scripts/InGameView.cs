@@ -10,6 +10,7 @@ public class InGameView : MonoBehaviour
     public event Action InputLeftKey;
     public event Action InputUpKey;
     public event Action InputDownKey;
+    public event Action ClickMenuButton;
 
     [SerializeField] private Cell[] cells;
     [SerializeField] private Text scoreText;

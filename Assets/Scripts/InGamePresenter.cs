@@ -21,6 +21,7 @@ public class InGamePresenter : MonoBehaviour
         inGameView.InputLeftKey += MoveCellLeft;
         inGameView.InputUpKey += MoveCellUp;
         inGameView.InputDownKey += MoveCellDown;
+        inGameView.ClickMenuButton += OpenWindow;
         menuWindowView.OnClickRestartButton += RestartGame;
 
         // ステージの初期状態を生成
@@ -83,6 +84,14 @@ public class InGamePresenter : MonoBehaviour
     private void LoadResultScene()
     {
         SceneController.Instance.LoadScene(SceneNames.Result);
+    }
+
+    /// <summary>
+    /// メニューウィンドウを表示する
+    /// </summary>
+    public void OpenWindow()
+    {
+        menuWindowView.gameObject.SetActive(true);
     }
 
 
