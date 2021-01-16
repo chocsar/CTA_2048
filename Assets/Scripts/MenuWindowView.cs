@@ -6,11 +6,6 @@ public class MenuWindowView : MonoBehaviour
 {
     public event Action OnClickRestartButton;
 
-    private void Start()
-    {
-        CloseWindow();
-    }
-
     /// <summary>
     /// Windowを非表示にする
     /// </summary>
