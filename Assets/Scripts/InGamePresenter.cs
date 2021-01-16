@@ -26,7 +26,7 @@ public class InGamePresenter : MonoBehaviour
 
         // 初期化
         inGameModel.InitStage();
-        inGameModel.SetHighScore(LoadScore());
+        inGameModel.SetHighScore(LoadHighScore());
 
     }
 
@@ -61,9 +61,10 @@ public class InGamePresenter : MonoBehaviour
         int highScore = inGameModel.GetHighScore();
         if (score == highScore)
         {
-            SaveScore(highScore);
+            SaveHighScore(highScore);
         }
 
+        SaveScore(score);
         LoadResultScene();
     }
 
@@ -86,9 +87,14 @@ public class InGamePresenter : MonoBehaviour
         ScoreManager.Instance.SaveScore(score);
     }
 
-    private int LoadScore()
+    private void SaveHighScore(int highScore)
     {
-        return ScoreManager.Instance.LoadScore();
+        ScoreManager.Instance.SaveHighScore(highScore);
+    }
+
+    private int LoadHighScore()
+    {
+        return ScoreManager.Instance.LoadHighScore();
     }
 
     /// <summary>

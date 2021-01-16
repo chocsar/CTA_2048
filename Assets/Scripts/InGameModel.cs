@@ -341,7 +341,7 @@ public class InGameModel : MonoBehaviour
     public void SetHighScore(int score)
     {
         highScore = score;
-        ChangeHighScore?.Invoke(score);
+        ChangeHighScore?.Invoke(highScore);
     }
 
     public int GetHighScore()
