@@ -24,8 +24,9 @@ public class InGamePresenter : MonoBehaviour
         inGameView.InputDownKey += MoveCellDown;
         menuWindowView.OnClickRestartButton += RestartGame;
 
-        // ステージの初期状態を生成
+        // 初期化
         inGameModel.InitStage();
+        inGameModel.SetHighScore(LoadScore());
 
     }
 
@@ -55,7 +56,14 @@ public class InGamePresenter : MonoBehaviour
     /// </summary>
     private void GameOver()
     {
-        SaveScore(inGameModel.GetScore());
+        //ハイスコアのセーブ
+        int score = inGameModel.GetScore();
+        int highScore = inGameModel.GetHighScore();
+        if (score == highScore)
+        {
+            SaveScore(highScore);
+        }
+
         LoadResultScene();
     }
 
@@ -76,6 +84,11 @@ public class InGamePresenter : MonoBehaviour
     private void SaveScore(int score)
     {
         ScoreManager.Instance.SaveScore(score);
+    }
+
+    private int LoadScore()
+    {
+        return ScoreManager.Instance.LoadScore();
     }
 
     /// <summary>

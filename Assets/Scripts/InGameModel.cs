@@ -344,6 +344,11 @@ public class InGameModel : MonoBehaviour
         ChangeHighScore?.Invoke(score);
     }
 
+    public int GetHighScore()
+    {
+        return highScore;
+    }
+
 
 
 }
