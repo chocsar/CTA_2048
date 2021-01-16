@@ -14,6 +14,7 @@ public class InGamePresenter : MonoBehaviour
 
         // Modelの値の変更を監視する
         inGameModel.ChangeScore += inGameView.SetScore;
+        inGameModel.ChangeHighScore += inGameView.SetHighScore;
         inGameModel.ApplyStage += inGameView.ApplyStage;
         inGameModel.GameOver += GameOver;
 
@@ -56,15 +57,8 @@ public class InGamePresenter : MonoBehaviour
     /// </summary>
     private void GameOver()
     {
-        //ハイスコアのセーブ
-        int score = inGameModel.GetScore();
-        int highScore = inGameModel.GetHighScore();
-        if (score == highScore)
-        {
-            SaveHighScore(highScore);
-        }
-
-        SaveScore(score);
+        SaveHighScore();
+        SaveScore(inGameModel.GetScore());
         LoadResultScene();
     }
 
@@ -87,9 +81,15 @@ public class InGamePresenter : MonoBehaviour
         ScoreManager.Instance.SaveScore(score);
     }
 
-    private void SaveHighScore(int highScore)
+    private void SaveHighScore()
     {
-        ScoreManager.Instance.SaveHighScore(highScore);
+        int score = inGameModel.GetScore();
+        int highScore = inGameModel.GetHighScore();
+
+        if (score == highScore)
+        {
+            ScoreManager.Instance.SaveHighScore(highScore);
+        }
     }
 
     private int LoadHighScore()
