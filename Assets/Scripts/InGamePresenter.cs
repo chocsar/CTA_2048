@@ -67,7 +67,10 @@ public class InGamePresenter : MonoBehaviour
     /// </summary>
     private void RestartGame()
     {
+        SaveHighScore();
+
         inGameModel.InitStage();
+        inGameModel.SetHighScore(LoadHighScore());
         inGameModel.ResetScore();
         menuWindowView.CloseWindow();
     }
