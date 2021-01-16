@@ -11,10 +11,12 @@ public class InGameModel : MonoBehaviour
     private const int SecondDimension = 1;
 
     public event Action<int> ChangeScore;
+    public event Action<int> ChangeHighScore;
     public event Action<int[,]> ApplyStage;
     public event Action GameOver;
 
     private int score;
+    private int highScore;
 
     /// <summary>
     /// 盤面の再描画を行う必要があるかのフラグ
@@ -317,6 +319,12 @@ public class InGameModel : MonoBehaviour
     {
         score += cellValue * 2;
         ChangeScore?.Invoke(score);
+
+        //ハイスコア更新
+        if (score > highScore)
+        {
+            SetHighScore(score);
+        }
     }
 
     public int GetScore() { return score; }
@@ -328,6 +336,12 @@ public class InGameModel : MonoBehaviour
     {
         score = 0;
         ChangeScore?.Invoke(score);
+    }
+
+    public void SetHighScore(int score)
+    {
+        highScore = score;
+        ChangeHighScore?.Invoke(score);
     }
 
 
