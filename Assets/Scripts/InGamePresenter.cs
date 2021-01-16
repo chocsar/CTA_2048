@@ -21,7 +21,7 @@ public class InGamePresenter : MonoBehaviour
         inGameView.InputLeftKey += MoveCellLeft;
         inGameView.InputUpKey += MoveCellUp;
         inGameView.InputDownKey += MoveCellDown;
-        inGameView.ClickMenuButton += OpenWindow;
+        inGameView.OnClickMenuButton += OpenWindow;
         menuWindowView.OnClickRestartButton += RestartGame;
 
         // ステージの初期状態を生成
