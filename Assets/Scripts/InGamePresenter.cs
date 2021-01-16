@@ -4,13 +4,12 @@ public class InGamePresenter : MonoBehaviour
 {
     private InGameModel inGameModel;
     private InGameView inGameView;
-    private MenuWindowView menuWindowView;
+    [SerializeField] private MenuWindowView menuWindowView;
 
     private void Start()
     {
         inGameModel = GetComponent<InGameModel>();
         inGameView = GetComponent<InGameView>();
-        menuWindowView = GetComponent<MenuWindowView>();
 
         // Modelの値の変更を監視する
         inGameModel.ChangeScore += inGameView.SetScore;
@@ -23,32 +22,35 @@ public class InGamePresenter : MonoBehaviour
         inGameView.InputLeftKey += MoveCellLeft;
         inGameView.InputUpKey += MoveCellUp;
         inGameView.InputDownKey += MoveCellDown;
+        inGameView.OnClickMenuButton += menuWindowView.OpenWindow;
         menuWindowView.OnClickRestartButton += RestartGame;
 
         // 初期化
         inGameModel.InitStage();
         inGameModel.SetHighScore(LoadHighScore());
+        inGameModel.ResetScore();
+
 
     }
 
     private void MoveCellRight()
     {
-        if (menuWindowView.IsActive()) { return; }
+        if (menuWindowView.IsOpenWindow()) return;
         inGameModel.MoveCellRight();
     }
     private void MoveCellLeft()
     {
-        if (menuWindowView.IsActive()) { return; }
+        if (menuWindowView.IsOpenWindow()) return;
         inGameModel.MoveCellLeft();
     }
     private void MoveCellUp()
     {
-        if (menuWindowView.IsActive()) { return; }
+        if (menuWindowView.IsOpenWindow()) return;
         inGameModel.MoveCellUp();
     }
     private void MoveCellDown()
     {
-        if (menuWindowView.IsActive()) { return; }
+        if (menuWindowView.IsOpenWindow()) return;
         inGameModel.MoveCellDown();
     }
 

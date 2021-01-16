@@ -5,17 +5,13 @@ using UnityEngine;
 public class MenuWindowView : MonoBehaviour
 {
     public event Action OnClickRestartButton;
-    [SerializeField] private GameObject menuWindow;
 
     /// <summary>
-    /// メニューが表示されているかどうか
+    /// Windowを非表示にする
     /// </summary>
-    private bool isActive;
-
-    private void Start()
+    public void CloseWindow()
     {
-        //初期化
-        CloseWindow();
+        gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -23,17 +19,7 @@ public class MenuWindowView : MonoBehaviour
     /// </summary>
     public void OpenWindow()
     {
-        menuWindow.SetActive(true);
-        isActive = true;
-    }
-
-    /// <summary>
-    /// Windowを非表示にする
-    /// </summary>
-    public void CloseWindow()
-    {
-        menuWindow.SetActive(false);
-        isActive = false;
+        gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -48,9 +34,9 @@ public class MenuWindowView : MonoBehaviour
     /// メニューが表示されているかどうかを返す
     /// </summary>
     /// <returns></returns>
-    public bool IsActive()
+    public bool IsOpenWindow()
     {
-        return isActive;
+        return gameObject.activeSelf;
     }
 
 }
