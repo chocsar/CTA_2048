@@ -6,16 +6,16 @@ public class InGamePresenter : MonoBehaviour
     private InGameView inGameView;
     [SerializeField] private MenuWindowView menuWindowView;
 
-    private void Start()
+    private void Awake()
     {
         inGameModel = GetComponent<InGameModel>();
         inGameView = GetComponent<InGameView>();
 
         // Modelの値の変更を監視する
+        inGameModel.ChangeStageState += inGameView.ApplyStage;
+        inGameModel.GameOver += GameOver;
         inGameModel.ChangeScore += inGameView.SetScore;
         inGameModel.ChangeHighScore += inGameView.SetHighScore;
-        inGameModel.ApplyStage += inGameView.ApplyStage;
-        inGameModel.GameOver += GameOver;
 
         // Viewの入力を監視する
         inGameView.InputRightKey += MoveCellRight;
@@ -25,12 +25,14 @@ public class InGamePresenter : MonoBehaviour
         inGameView.OnClickMenuButton += menuWindowView.OpenWindow;
         menuWindowView.OnClickRestartButton += RestartGame;
 
+    }
+
+    private void Start()
+    {
         // 初期化
         inGameModel.InitStage();
         inGameModel.SetHighScore(LoadHighScore());
         inGameModel.ResetScore();
-
-
     }
 
     private void MoveCellRight()
