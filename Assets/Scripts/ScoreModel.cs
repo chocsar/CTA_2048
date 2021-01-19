@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class ScoreModel : MonoBehaviour
 {
-    public event Action<int> ChangeScore;
-    public event Action<int> ChangeHighScore;
+    public event Action<int> ChangeScoreEvent;
+    public event Action<int> ChangeHighScoreEvent;
     private int score;
     private int highScore;
 
@@ -15,7 +15,7 @@ public class ScoreModel : MonoBehaviour
     public void SetScore(int cellValue)
     {
         score += cellValue * 2;
-        ChangeScore?.Invoke(score);
+        ChangeScoreEvent?.Invoke(score);
 
         //ハイスコア更新
         if (score > highScore)
@@ -39,7 +39,7 @@ public class ScoreModel : MonoBehaviour
     public void ResetScore()
     {
         score = 0;
-        ChangeScore?.Invoke(score);
+        ChangeScoreEvent?.Invoke(score);
     }
 
     /// <summary>
@@ -49,7 +49,7 @@ public class ScoreModel : MonoBehaviour
     public void SetHighScore(int score)
     {
         highScore = score;
-        ChangeHighScore?.Invoke(highScore);
+        ChangeHighScoreEvent?.Invoke(highScore);
     }
 
     /// <summary>

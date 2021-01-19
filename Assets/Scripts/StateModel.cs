@@ -10,9 +10,9 @@ public class StateModel : MonoBehaviour
     private const int FirstDimension = 0;
     private const int SecondDimension = 1;
 
-    public event Action<int[,]> ChangeStageState;
-    public event Action GameOver;
-    public event Action<int> ChangeScore;
+    public event Action<int[,]> ChangeStageStateEvent;
+    public event Action GameOverEvent;
+    public event Action<int> ChangeScoreEvent;
 
     /// <summary>
     /// 盤面の再描画を行う必要があるかのフラグ
@@ -43,7 +43,7 @@ public class StateModel : MonoBehaviour
         stageStates[(int)posB.x, (int)posB.y] = UnityEngine.Random.Range(0, 1.0f) < Probability ? MinCellValue : MinCellValue * 2;
 
         //ステージの状態を画面に反映
-        ChangeStageState?.Invoke(stageStates);
+        ChangeStageStateEvent?.Invoke(stageStates);
     }
 
     /// <summary>
@@ -65,11 +65,11 @@ public class StateModel : MonoBehaviour
         {
             CreateNewRandomCell();
 
-            ChangeStageState?.Invoke(stageStates);
+            ChangeStageStateEvent?.Invoke(stageStates);
 
             if (IsGameOver(stageStates))
             {
-                GameOver?.Invoke();
+                GameOverEvent?.Invoke();
             }
         }
     }
@@ -93,11 +93,11 @@ public class StateModel : MonoBehaviour
         {
             CreateNewRandomCell();
 
-            ChangeStageState?.Invoke(stageStates);
+            ChangeStageStateEvent?.Invoke(stageStates);
 
             if (IsGameOver(stageStates))
             {
-                GameOver?.Invoke();
+                GameOverEvent?.Invoke();
             }
         }
     }
@@ -121,11 +121,11 @@ public class StateModel : MonoBehaviour
         {
             CreateNewRandomCell();
 
-            ChangeStageState?.Invoke(stageStates);
+            ChangeStageStateEvent?.Invoke(stageStates);
 
             if (IsGameOver(stageStates))
             {
-                GameOver?.Invoke();
+                GameOverEvent?.Invoke();
             }
         }
     }
@@ -149,11 +149,11 @@ public class StateModel : MonoBehaviour
         {
             CreateNewRandomCell();
 
-            ChangeStageState?.Invoke(stageStates);
+            ChangeStageStateEvent?.Invoke(stageStates);
 
             if (IsGameOver(stageStates))
             {
-                GameOver?.Invoke();
+                GameOverEvent?.Invoke();
             }
         }
     }
@@ -199,7 +199,7 @@ public class StateModel : MonoBehaviour
         else if (value == nextValue)
         {
             MergeCells(row, col, nextRow, nextCol, value);
-            ChangeScore?.Invoke(value);
+            ChangeScoreEvent?.Invoke(value);
         }
         // 異なる値のときは移動処理を終了
         else if (value != nextValue)

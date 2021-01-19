@@ -3,10 +3,10 @@ using System;
 
 public class InGameModel : MonoBehaviour
 {
-    public event Action<int[,]> ChangeStageState;
-    public event Action GameOver;
-    public event Action<int> ChangeScore;
-    public event Action<int> ChangeHighScore;
+    public event Action<int[,]> ChangeStageStateEvent;
+    public event Action GameOverEvent;
+    public event Action<int> ChangeScoreEvent;
+    public event Action<int> ChangeHighScoreEvent;
 
     private StateModel stateModel;
     private ScoreModel scoreModel;
@@ -17,13 +17,13 @@ public class InGameModel : MonoBehaviour
         scoreModel = GetComponent<ScoreModel>();
 
         //StateModelの変更を監視する
-        stateModel.ChangeStageState += OnChangeStageState;
-        stateModel.GameOver += OnGameOver;
-        stateModel.ChangeScore += scoreModel.SetScore;
+        stateModel.ChangeStageStateEvent += ChangeStageState;
+        stateModel.GameOverEvent += GameOver;
+        stateModel.ChangeScoreEvent += scoreModel.SetScore;
 
         //ScoreModelの変更を監視する
-        scoreModel.ChangeScore += OnChangeScore;
-        scoreModel.ChangeHighScore += OnChangeHighScore;
+        scoreModel.ChangeScoreEvent += ChangeScore;
+        scoreModel.ChangeHighScoreEvent += ChangeHighScore;
     }
 
     public void InitStage()
@@ -51,11 +51,6 @@ public class InGameModel : MonoBehaviour
         stateModel.MoveCellDown();
     }
 
-    public void SetScore(int score)
-    {
-        scoreModel.SetScore(score);
-    }
-
     public int GetScore()
     {
         return scoreModel.GetScore();
@@ -66,9 +61,9 @@ public class InGameModel : MonoBehaviour
         scoreModel.ResetScore();
     }
 
-    public void SetHighScore(int score)
+    public void SetHighScore(int highScore)
     {
-        scoreModel.SetHighScore(score);
+        scoreModel.SetHighScore(highScore);
     }
 
     public int GetHighScore()
@@ -91,24 +86,24 @@ public class InGameModel : MonoBehaviour
         return scoreModel.LoadHighScore();
     }
 
-    private void OnChangeStageState(int[,] stageState)
+    private void ChangeStageState(int[,] stageState)
     {
-        ChangeStageState?.Invoke(stageState);
+        ChangeStageStateEvent?.Invoke(stageState);
     }
 
-    private void OnGameOver()
+    private void GameOver()
     {
-        GameOver?.Invoke();
+        GameOverEvent?.Invoke();
     }
 
-    private void OnChangeScore(int score)
+    private void ChangeScore(int score)
     {
-        ChangeScore?.Invoke(score);
+        ChangeScoreEvent?.Invoke(score);
     }
 
-    private void OnChangeHighScore(int highScore)
+    private void ChangeHighScore(int highScore)
     {
-        ChangeHighScore?.Invoke(highScore);
+        ChangeHighScoreEvent?.Invoke(highScore);
     }
 
 

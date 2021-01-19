@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MenuWindowView : MonoBehaviour
 {
-    public event Action OnClickRestartButton;
+    public event Action ClickRestartButtonEvent;
 
     /// <summary>
     /// Windowを非表示にする
@@ -27,7 +27,7 @@ public class MenuWindowView : MonoBehaviour
     /// </summary>
     public void ClickRestartButton()
     {
-        OnClickRestartButton?.Invoke();
+        ClickRestartButtonEvent?.Invoke();
     }
 
     /// <summary>

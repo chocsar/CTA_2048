@@ -6,11 +6,11 @@ public class InGameView : MonoBehaviour
 {
     private const int StageSize = 4;
 
-    public event Action InputRightKey;
-    public event Action InputLeftKey;
-    public event Action InputUpKey;
-    public event Action InputDownKey;
-    public event Action OnClickMenuButton;
+    public event Action InputRightKeyEvent;
+    public event Action InputLeftKeyEvent;
+    public event Action InputUpKeyEvent;
+    public event Action InputDownKeyEvent;
+    public event Action ClickMenuButtonEvent;
 
     [SerializeField] private Cell[] cells;
     [SerializeField] private Text scoreText;
@@ -30,19 +30,19 @@ public class InGameView : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             //nullチェック
-            InputRightKey?.Invoke();
+            InputRightKeyEvent?.Invoke();
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            InputLeftKey?.Invoke();
+            InputLeftKeyEvent?.Invoke();
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            InputUpKey?.Invoke();
+            InputUpKeyEvent?.Invoke();
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            InputDownKey?.Invoke();
+            InputDownKeyEvent?.Invoke();
         }
     }
 
@@ -71,7 +71,7 @@ public class InGameView : MonoBehaviour
 
     public void ClickMenuButton()
     {
-        OnClickMenuButton?.Invoke();
+        ClickMenuButtonEvent?.Invoke();
     }
 
 }

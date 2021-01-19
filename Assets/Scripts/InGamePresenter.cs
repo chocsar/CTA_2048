@@ -12,18 +12,18 @@ public class InGamePresenter : MonoBehaviour
         inGameView = GetComponent<InGameView>();
 
         // Modelの値の変更を監視する
-        inGameModel.ChangeStageState += inGameView.ApplyStage;
-        inGameModel.GameOver += GameOver;
-        inGameModel.ChangeScore += inGameView.SetScore;
-        inGameModel.ChangeHighScore += inGameView.SetHighScore;
+        inGameModel.ChangeStageStateEvent += inGameView.ApplyStage;
+        inGameModel.GameOverEvent += GameOver;
+        inGameModel.ChangeScoreEvent += inGameView.SetScore;
+        inGameModel.ChangeHighScoreEvent += inGameView.SetHighScore;
 
         // Viewの入力を監視する
-        inGameView.InputRightKey += MoveCellRight;
-        inGameView.InputLeftKey += MoveCellLeft;
-        inGameView.InputUpKey += MoveCellUp;
-        inGameView.InputDownKey += MoveCellDown;
-        inGameView.OnClickMenuButton += menuWindowView.OpenWindow;
-        menuWindowView.OnClickRestartButton += RestartGame;
+        inGameView.InputRightKeyEvent += MoveCellRight;
+        inGameView.InputLeftKeyEvent += MoveCellLeft;
+        inGameView.InputUpKeyEvent += MoveCellUp;
+        inGameView.InputDownKeyEvent += MoveCellDown;
+        inGameView.ClickMenuButtonEvent += menuWindowView.OpenWindow;
+        menuWindowView.ClickRestartButtonEvent += RestartGame;
 
     }
 
