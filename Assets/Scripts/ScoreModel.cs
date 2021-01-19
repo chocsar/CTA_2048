@@ -60,4 +60,36 @@ public class ScoreModel : MonoBehaviour
     {
         return highScore;
     }
+
+    /// <summary>
+    /// スコアをセーブする
+    /// </summary>
+    /// <param name="score">スコア</param>
+    public void SaveScore(int score)
+    {
+        ScoreManager.Instance.SaveScore(score);
+    }
+
+    /// <summary>
+    /// ハイスコアをセーブする
+    /// </summary>
+    public void SaveHighScore()
+    {
+        int score = GetScore();
+        int highScore = GetHighScore();
+
+        if (score == highScore)
+        {
+            ScoreManager.Instance.SaveHighScore(highScore);
+        }
+    }
+
+    /// <summary>
+    /// ハイスコアをロードする
+    /// </summary>
+    /// <returns>ハイスコア</returns>
+    public int LoadHighScore()
+    {
+        return ScoreManager.Instance.LoadHighScore();
+    }
 }

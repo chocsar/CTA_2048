@@ -76,6 +76,21 @@ public class InGameModel : MonoBehaviour
         return scoreModel.GetHighScore();
     }
 
+    public void SaveScore(int score)
+    {
+        scoreModel.SaveScore(score);
+    }
+
+    public void SaveHighScore()
+    {
+        scoreModel.SaveHighScore();
+    }
+
+    public int LoadHighScore()
+    {
+        return scoreModel.LoadHighScore();
+    }
+
     private void OnChangeStageState(int[,] stageState)
     {
         ChangeStageState?.Invoke(stageState);

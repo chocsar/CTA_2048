@@ -31,7 +31,7 @@ public class InGamePresenter : MonoBehaviour
     {
         // 初期化
         inGameModel.InitStage();
-        inGameModel.SetHighScore(LoadHighScore());
+        inGameModel.SetHighScore(inGameModel.LoadHighScore());
         inGameModel.ResetScore();
     }
 
@@ -61,8 +61,8 @@ public class InGamePresenter : MonoBehaviour
     /// </summary>
     private void GameOver()
     {
-        SaveHighScore();
-        SaveScore(inGameModel.GetScore());
+        inGameModel.SaveHighScore();
+        inGameModel.SaveScore(inGameModel.GetScore());
         LoadResultScene();
     }
 
@@ -71,37 +71,12 @@ public class InGamePresenter : MonoBehaviour
     /// </summary>
     private void RestartGame()
     {
-        SaveHighScore();
+        inGameModel.SaveHighScore();
 
         inGameModel.InitStage();
-        inGameModel.SetHighScore(LoadHighScore());
+        inGameModel.SetHighScore(inGameModel.LoadHighScore());
         inGameModel.ResetScore();
         menuWindowView.CloseWindow();
-    }
-
-    /// <summary>
-    /// スコアをセーブする
-    /// </summary>
-    /// <param name="score">スコア</param>
-    private void SaveScore(int score)
-    {
-        ScoreManager.Instance.SaveScore(score);
-    }
-
-    private void SaveHighScore()
-    {
-        int score = inGameModel.GetScore();
-        int highScore = inGameModel.GetHighScore();
-
-        if (score == highScore)
-        {
-            ScoreManager.Instance.SaveHighScore(highScore);
-        }
-    }
-
-    private int LoadHighScore()
-    {
-        return ScoreManager.Instance.LoadHighScore();
     }
 
     /// <summary>
