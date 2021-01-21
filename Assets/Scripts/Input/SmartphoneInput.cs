@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class SmartphoneInput : IInput
 {
-    public int inputNumber;
-    public bool isFlicked;
-
     /// <summary>
     /// フリック入力判定になる移動距離
     /// </summary>
@@ -14,67 +11,72 @@ public class SmartphoneInput : IInput
 
     private Vector2 inputStartPosition;
     private Vector2 inputEndPosition;
+    private bool isFlicked;
 
-    public int GetInput()
+    public InputDirection GetInput()
     {
-        inputNumber = 0;
+        InputDirection inputDirection = InputDirection.None;
 
         if (Input.GetMouseButtonDown(0))
         {
             inputStartPosition = Input.mousePosition;
             isFlicked = false;
         }
-        if (Input.GetMouseButton(0) && !isFlicked)
+        else if (Input.GetMouseButton(0) && !isFlicked)
         {
             inputEndPosition = Input.mousePosition;
-            isFlicked = DeterminInput();
+            inputDirection = DeterminInputDirection();
         }
-        if (Input.GetMouseButtonUp(0) && !isFlicked)
+        else if (Input.GetMouseButtonUp(0) && !isFlicked)
         {
             inputEndPosition = Input.mousePosition;
-            isFlicked = DeterminInput();
+            inputDirection = DeterminInputDirection();
         }
 
-        return inputNumber;
+        return inputDirection;
+
     }
 
     /// <summary>
-    /// フリック入力を判定するメソッド
+    /// フリック入力の方向を判定する
     /// </summary>
-    /// <returns>フリック入力したかどうか</returns>
-    private bool DeterminInput()
+    /// <returns>入力方向</returns>
+    private InputDirection DeterminInputDirection()
     {
         Vector2 moveVector = inputEndPosition - inputStartPosition;
 
+        //フリック距離が短い場合
         if (Mathf.Abs(moveVector.x) <= flickDistance && Mathf.Abs(moveVector.y) <= flickDistance)
         {
-            return false;
+            return InputDirection.None;
         }
+
+        isFlicked = true;
 
         if (Mathf.Abs(moveVector.x) > Mathf.Abs(moveVector.y))
         {
             if (moveVector.x > 0)
             {
-                inputNumber = 1;
+                return InputDirection.Right;
             }
             else
             {
-                inputNumber = 2;
+                return InputDirection.Left;
             }
         }
         else
         {
             if (moveVector.y > 0)
             {
-                inputNumber = 3;
+                return InputDirection.Up;
             }
             else
             {
-                inputNumber = 4;
+                return InputDirection.Down;
             }
         }
-
-        return true;
     }
-
 }
+
+
+

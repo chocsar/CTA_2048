@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IInput
 {
-    int GetInput();
+    InputDirection GetInput();
 }

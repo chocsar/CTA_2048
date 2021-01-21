@@ -35,16 +35,16 @@ public class InGameView : MonoBehaviour
     {
         switch (input.GetInput())
         {
-            case 1:
+            case InputDirection.Right:
                 InputRightEvent?.Invoke();
                 break;
-            case 2:
+            case InputDirection.Left:
                 InputLeftEvent?.Invoke();
                 break;
-            case 3:
+            case InputDirection.Up:
                 InputUpEvent?.Invoke();
                 break;
-            case 4:
+            case InputDirection.Down:
                 InputDownEvent?.Invoke();
                 break;
         }

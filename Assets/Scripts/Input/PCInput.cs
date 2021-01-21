@@ -4,27 +4,28 @@ using UnityEngine;
 
 public class PCInput : IInput
 {
-    public int GetInput()
+    public InputDirection GetInput()
     {
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            return 1;
+            return InputDirection.Right;
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            return 2;
+            return InputDirection.Left;
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            return 3;
+            return InputDirection.Up;
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            return 4;
+            return InputDirection.Down;
         }
         else
         {
-            return 0;
+            return InputDirection.None;
         }
+
     }
 }
