@@ -18,10 +18,10 @@ public class InGamePresenter : MonoBehaviour
         inGameModel.ChangeHighScoreEvent += inGameView.SetHighScore;
 
         // Viewの入力を監視する
-        inGameView.InputRightKeyEvent += MoveCellRight;
-        inGameView.InputLeftKeyEvent += MoveCellLeft;
-        inGameView.InputUpKeyEvent += MoveCellUp;
-        inGameView.InputDownKeyEvent += MoveCellDown;
+        inGameView.InputRightEvent += MoveCellRight;
+        inGameView.InputLeftEvent += MoveCellLeft;
+        inGameView.InputUpEvent += MoveCellUp;
+        inGameView.InputDownEvent += MoveCellDown;
         inGameView.ClickMenuButtonEvent += menuWindowView.OpenWindow;
         menuWindowView.ClickRestartButtonEvent += RestartGame;
 

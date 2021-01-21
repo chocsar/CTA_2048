@@ -6,66 +6,48 @@ public class InGameView : MonoBehaviour
 {
     private const int StageSize = 4;
 
-    public event Action InputRightKeyEvent;
-    public event Action InputLeftKeyEvent;
-    public event Action InputUpKeyEvent;
-    public event Action InputDownKeyEvent;
+    public event Action InputRightEvent;
+    public event Action InputLeftEvent;
+    public event Action InputUpEvent;
+    public event Action InputDownEvent;
     public event Action ClickMenuButtonEvent;
 
     [SerializeField] private Cell[] cells;
     [SerializeField] private Text scoreText;
     [SerializeField] private Text highScoreText;
 
-    private void Update()
-    {
-        InputKey();
-    }
+    private IInput input;
 
-    /// <summary>
-    /// ユーザーからのキー入力を受け取る
-    /// </summary>
-    private void InputKey()
+    private void Start()
     {
         if (Application.platform == RuntimePlatform.Android ||
             Application.platform == RuntimePlatform.IPhonePlayer)
         {
-            if (SmartphoneInputManager.Instance.InputRight())
-            {
-                InputRightKeyEvent?.Invoke();
-            }
-            else if (SmartphoneInputManager.Instance.InputLeft())
-            {
-                InputLeftKeyEvent?.Invoke();
-            }
-            else if (SmartphoneInputManager.Instance.InputUp())
-            {
-                InputUpKeyEvent?.Invoke();
-            }
-            else if (SmartphoneInputManager.Instance.InputDown())
-            {
-                InputDownKeyEvent?.Invoke();
-            }
+            input = new SmartphoneInput();
         }
         else
         {
-            if (PCInputManager.Instance.InputRight())
-            {
-                InputRightKeyEvent?.Invoke();
-            }
-            else if (PCInputManager.Instance.InputLeft())
-            {
-                InputLeftKeyEvent?.Invoke();
-            }
-            else if (PCInputManager.Instance.InputUp())
-            {
-                InputUpKeyEvent?.Invoke();
-            }
-            else if (PCInputManager.Instance.InputDown())
-            {
-                InputDownKeyEvent?.Invoke();
-            }
+            input = new PCInput();
         }
+    }
 
+    private void Update()
+    {
+        switch (input.GetInput())
+        {
+            case 1:
+                InputRightEvent?.Invoke();
+                break;
+            case 2:
+                InputLeftEvent?.Invoke();
+                break;
+            case 3:
+                InputUpEvent?.Invoke();
+                break;
+            case 4:
+                InputDownEvent?.Invoke();
+                break;
+        }
     }
 
     /// <summary>
