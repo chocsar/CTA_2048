@@ -4,8 +4,5 @@ using UnityEngine;
 
 public interface IInput
 {
-    bool InputRight();
-    bool InputLeft();
-    bool InputUp();
-    bool InputDown();
+    int GetInput();
 }
