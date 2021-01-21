@@ -13,4 +13,14 @@ public class ScoreManager : SingletonMonoBehaviour<ScoreManager>
     {
         return PlayerPrefs.GetInt(PlayerPrefsKeys.Score, 0);
     }
+
+    public void SaveHighScore(int highScore)
+    {
+        PlayerPrefs.SetInt(PlayerPrefsKeys.HighScore, highScore);
+    }
+
+    public int LoadHighScore()
+    {
+        return PlayerPrefs.GetInt(PlayerPrefsKeys.HighScore, 0);
+    }
 }
