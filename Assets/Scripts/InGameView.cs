@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using System;
 
@@ -16,7 +16,6 @@ public class InGameView : MonoBehaviour
     [SerializeField] private Text scoreText;
     [SerializeField] private Text highScoreText;
 
-
     private void Update()
     {
         InputKey();
@@ -27,23 +26,46 @@ public class InGameView : MonoBehaviour
     /// </summary>
     private void InputKey()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Application.platform == RuntimePlatform.Android ||
+            Application.platform == RuntimePlatform.IPhonePlayer)
         {
-            //nullチェック
-            InputRightKeyEvent?.Invoke();
+            if (SmartphoneInputManager.Instance.InputRight())
+            {
+                InputRightKeyEvent?.Invoke();
+            }
+            else if (SmartphoneInputManager.Instance.InputLeft())
+            {
+                InputLeftKeyEvent?.Invoke();
+            }
+            else if (SmartphoneInputManager.Instance.InputUp())
+            {
+                InputUpKeyEvent?.Invoke();
+            }
+            else if (SmartphoneInputManager.Instance.InputDown())
+            {
+                InputDownKeyEvent?.Invoke();
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        else
         {
-            InputLeftKeyEvent?.Invoke();
+            if (PCInputManager.Instance.InputRight())
+            {
+                InputRightKeyEvent?.Invoke();
+            }
+            else if (PCInputManager.Instance.InputLeft())
+            {
+                InputLeftKeyEvent?.Invoke();
+            }
+            else if (PCInputManager.Instance.InputUp())
+            {
+                InputUpKeyEvent?.Invoke();
+            }
+            else if (PCInputManager.Instance.InputDown())
+            {
+                InputDownKeyEvent?.Invoke();
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            InputUpKeyEvent?.Invoke();
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            InputDownKeyEvent?.Invoke();
-        }
+
     }
 
     /// <summary>
