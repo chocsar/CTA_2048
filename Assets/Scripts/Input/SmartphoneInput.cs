@@ -17,17 +17,20 @@ public class SmartphoneInput : IInput
     {
         InputDirection inputDirection = InputDirection.None;
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.touchCount == 0) return inputDirection;
+        Touch touch = Input.GetTouch(0);
+
+        if (touch.phase == TouchPhase.Began)
         {
             inputStartPosition = Input.mousePosition;
             isFlicked = false;
         }
-        else if (Input.GetMouseButton(0) && !isFlicked)
+        else if (touch.phase == TouchPhase.Moved && !isFlicked)
         {
             inputEndPosition = Input.mousePosition;
             inputDirection = DeterminInputDirection();
         }
-        else if (Input.GetMouseButtonUp(0) && !isFlicked)
+        else if (touch.phase == TouchPhase.Ended && !isFlicked)
         {
             inputEndPosition = Input.mousePosition;
             inputDirection = DeterminInputDirection();
