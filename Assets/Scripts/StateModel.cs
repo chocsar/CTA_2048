@@ -12,18 +12,18 @@ public class StateModel : MonoBehaviour
 
     public IObservable<int[,]> ChangeStageStatesEvent
     {
-        get { return changeStageStatesSubject; }
+        get { return stageStatesSubject; }
     }
     public IObservable<int> ChangeScoreEvent
     {
-        get { return changeScoreSubject; }
+        get { return scoreSubject; }
     }
     public IObservable<Unit> GameOverEvent
     {
         get { return gameOverSubject; }
     }
-    private Subject<int[,]> changeStageStatesSubject = new Subject<int[,]>();
-    private Subject<int> changeScoreSubject = new Subject<int>();
+    private Subject<int[,]> stageStatesSubject = new Subject<int[,]>();
+    private Subject<int> scoreSubject = new Subject<int>();
     private Subject<Unit> gameOverSubject = new Subject<Unit>();
 
     private readonly int[,] stageStates = new int[4, 4];
@@ -56,7 +56,7 @@ public class StateModel : MonoBehaviour
         stageStates[(int)posA.x, (int)posA.y] = MinCellValue;
         stageStates[(int)posB.x, (int)posB.y] = UnityEngine.Random.Range(0, 1.0f) < Probability ? MinCellValue : MinCellValue * 2;
 
-        changeStageStatesSubject.OnNext(stageStates);
+        stageStatesSubject.OnNext(stageStates);
     }
 
     /// <summary>
@@ -155,7 +155,7 @@ public class StateModel : MonoBehaviour
         else if (value == nextValue)
         {
             MergeCells(row, col, nextRow, nextCol, value);
-            changeScoreSubject.OnNext(value);
+            scoreSubject.OnNext(value);
         }
         // 異なる値のときは移動処理を終了
         else if (value != nextValue)
@@ -215,7 +215,7 @@ public class StateModel : MonoBehaviour
         //新たなセルを作成
         CreateNewRandomCell();
         //ステージの状態を画面に反映
-        changeStageStatesSubject.OnNext(stageStates);
+        stageStatesSubject.OnNext(stageStates);
         //ゲームオーバーの判定
         if (IsGameOver(stageStates))
         {

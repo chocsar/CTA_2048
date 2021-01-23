@@ -6,15 +6,15 @@ public class InGameModel : MonoBehaviour
 {
     public IObservable<int[,]> ChangeStageStatesEvent
     {
-        get { return changeStageStatesSubject; }
+        get { return stageStatesSubject; }
     }
     public IObservable<int> ChangeScoreEvent
     {
-        get { return changeScoreSubject; }
+        get { return scoreSubject; }
     }
     public IObservable<int> ChangeHighScoreEvent
     {
-        get { return changeHighScoreSubject; }
+        get { return highScoreSubject; }
     }
     public IObservable<Unit> GameOverEvent
     {
@@ -24,9 +24,9 @@ public class InGameModel : MonoBehaviour
     private StateModel stateModel;
     private ScoreModel scoreModel;
 
-    private Subject<int[,]> changeStageStatesSubject = new Subject<int[,]>();
-    private Subject<int> changeScoreSubject = new Subject<int>();
-    private Subject<int> changeHighScoreSubject = new Subject<int>();
+    private Subject<int[,]> stageStatesSubject = new Subject<int[,]>();
+    private Subject<int> scoreSubject = new Subject<int>();
+    private Subject<int> highScoreSubject = new Subject<int>();
     private Subject<Unit> gameOverSubject = new Subject<Unit>();
 
     private void Awake()
@@ -91,17 +91,17 @@ public class InGameModel : MonoBehaviour
 
     private void ChangeStageStates(int[,] stageState)
     {
-        changeStageStatesSubject.OnNext(stageState);
+        stageStatesSubject.OnNext(stageState);
     }
 
     private void ChangeScore(int score)
     {
-        changeScoreSubject.OnNext(score);
+        scoreSubject.OnNext(score);
     }
 
     private void ChangeHighScore(int highScore)
     {
-        changeHighScoreSubject.OnNext(highScore);
+        highScoreSubject.OnNext(highScore);
     }
 
     private void GameOver()

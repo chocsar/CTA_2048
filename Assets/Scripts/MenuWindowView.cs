@@ -7,10 +7,10 @@ public class MenuWindowView : MonoBehaviour
 {
     public IObservable<Unit> ClickRestartButtonEvent
     {
-        get { return clickRestartButtonSubject; }
+        get { return restartButtonSubject; }
     }
 
-    private Subject<Unit> clickRestartButtonSubject = new Subject<Unit>();
+    private Subject<Unit> restartButtonSubject = new Subject<Unit>();
 
     /// <summary>
     /// Windowを非表示にする
@@ -33,7 +33,7 @@ public class MenuWindowView : MonoBehaviour
     /// </summary>
     public void ClickRestartButton()
     {
-        clickRestartButtonSubject.OnNext(Unit.Default);
+        restartButtonSubject.OnNext(Unit.Default);
     }
 
     /// <summary>
