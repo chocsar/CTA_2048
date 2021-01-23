@@ -56,6 +56,7 @@ public class StateModel : MonoBehaviour
         stageStates[(int)posA.x, (int)posA.y] = MinCellValue;
         stageStates[(int)posB.x, (int)posB.y] = UnityEngine.Random.Range(0, 1.0f) < Probability ? MinCellValue : MinCellValue * 2;
 
+        changeStageStatesSubject.OnNext(stageStates);
     }
 
     /// <summary>
