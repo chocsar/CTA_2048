@@ -18,9 +18,9 @@ public class InGameModel : MonoBehaviour
         scoreModel = GetComponent<ScoreModel>();
 
         //StateModelの変更を監視する
-        stateModel.ChangeStageStateEvent += ChangeStageState;
-        stateModel.GameOverEvent += GameOver;
-        stateModel.ChangeScoreEvent += scoreModel.SetScore;
+        stateModel.ChangeStageStatesEvent.Subscribe(ChangeStageStates);
+        stateModel.ChangeScoreEvent.Subscribe(scoreModel.SetScore);
+        stateModel.GameOverEvent.Subscribe(_ => GameOver());
 
         //ScoreModelの変更を監視する
         scoreModel.ChangeScoreEvent.Subscribe(ChangeScore);
@@ -87,7 +87,7 @@ public class InGameModel : MonoBehaviour
         return scoreModel.LoadHighScore();
     }
 
-    private void ChangeStageState(int[,] stageState)
+    private void ChangeStageStates(int[,] stageState)
     {
         ChangeStageStateEvent?.Invoke(stageState);
     }

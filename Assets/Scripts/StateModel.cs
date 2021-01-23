@@ -1,18 +1,32 @@
 ﻿using System;
 using UnityEngine;
+using UniRx;
 
 public class StateModel : MonoBehaviour
 {
-    private readonly int[,] stageStates = new int[4, 4];
     private const int StageSize = 4;
     private const int MinCellValue = 2;
     private const float Probability = 0.5f;
     private const int FirstDimension = 0;
     private const int SecondDimension = 1;
 
-    public event Action<int[,]> ChangeStageStateEvent;
-    public event Action GameOverEvent;
-    public event Action<int> ChangeScoreEvent;
+    public IObservable<int[,]> ChangeStageStatesEvent
+    {
+        get { return changeStageStatesSubject; }
+    }
+    public IObservable<int> ChangeScoreEvent
+    {
+        get { return changeScoreSubject; }
+    }
+    public IObservable<Unit> GameOverEvent
+    {
+        get { return gameOverSubject; }
+    }
+    private Subject<int[,]> changeStageStatesSubject = new Subject<int[,]>();
+    private Subject<int> changeScoreSubject = new Subject<int>();
+    private Subject<Unit> gameOverSubject = new Subject<Unit>();
+
+    private readonly int[,] stageStates = new int[4, 4];
 
     /// <summary>
     /// 盤面の再描画を行う必要があるかのフラグ
@@ -42,8 +56,6 @@ public class StateModel : MonoBehaviour
         stageStates[(int)posA.x, (int)posA.y] = MinCellValue;
         stageStates[(int)posB.x, (int)posB.y] = UnityEngine.Random.Range(0, 1.0f) < Probability ? MinCellValue : MinCellValue * 2;
 
-        //ステージの状態を画面に反映
-        ChangeStageStateEvent?.Invoke(stageStates);
     }
 
     /// <summary>
@@ -65,11 +77,11 @@ public class StateModel : MonoBehaviour
         {
             CreateNewRandomCell();
 
-            ChangeStageStateEvent?.Invoke(stageStates);
+            changeStageStatesSubject.OnNext(stageStates);
 
             if (IsGameOver(stageStates))
             {
-                GameOverEvent?.Invoke();
+                gameOverSubject.OnNext(Unit.Default);
             }
         }
     }
@@ -93,11 +105,11 @@ public class StateModel : MonoBehaviour
         {
             CreateNewRandomCell();
 
-            ChangeStageStateEvent?.Invoke(stageStates);
+            changeStageStatesSubject.OnNext(stageStates);
 
             if (IsGameOver(stageStates))
             {
-                GameOverEvent?.Invoke();
+                gameOverSubject.OnNext(Unit.Default);
             }
         }
     }
@@ -121,11 +133,11 @@ public class StateModel : MonoBehaviour
         {
             CreateNewRandomCell();
 
-            ChangeStageStateEvent?.Invoke(stageStates);
+            changeStageStatesSubject.OnNext(stageStates);
 
             if (IsGameOver(stageStates))
             {
-                GameOverEvent?.Invoke();
+                gameOverSubject.OnNext(Unit.Default);
             }
         }
     }
@@ -149,11 +161,11 @@ public class StateModel : MonoBehaviour
         {
             CreateNewRandomCell();
 
-            ChangeStageStateEvent?.Invoke(stageStates);
+            changeStageStatesSubject.OnNext(stageStates);
 
             if (IsGameOver(stageStates))
             {
-                GameOverEvent?.Invoke();
+                gameOverSubject.OnNext(Unit.Default);
             }
         }
     }
@@ -199,7 +211,7 @@ public class StateModel : MonoBehaviour
         else if (value == nextValue)
         {
             MergeCells(row, col, nextRow, nextCol, value);
-            ChangeScoreEvent?.Invoke(value);
+            changeScoreSubject.OnNext(value);
         }
         // 異なる値のときは移動処理を終了
         else if (value != nextValue)
