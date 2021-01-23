@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using UniRx;
 
 public class InGameModel : MonoBehaviour
 {
@@ -22,8 +23,8 @@ public class InGameModel : MonoBehaviour
         stateModel.ChangeScoreEvent += scoreModel.SetScore;
 
         //ScoreModelの変更を監視する
-        scoreModel.ChangeScoreEvent += ChangeScore;
-        scoreModel.ChangeHighScoreEvent += ChangeHighScore;
+        scoreModel.ChangeScoreEvent.Subscribe(ChangeScore);
+        scoreModel.ChangeHighScoreEvent.Subscribe(ChangeHighScore);
     }
 
     public void InitStage()
