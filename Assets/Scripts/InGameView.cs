@@ -11,8 +11,10 @@ public class InGameView : MonoBehaviour
     {
         get { return inputSubject; }
     }
-
-    public event Action ClickMenuButtonEvent;
+    public IObservable<Unit> ClickMenuButtonEvent
+    {
+        get { return clickMenuButtonSubject; }
+    }
 
     [SerializeField] private Cell[] cells;
     [SerializeField] private Text scoreText;
@@ -20,6 +22,7 @@ public class InGameView : MonoBehaviour
 
     private IInput input;
     private Subject<InputDirection> inputSubject = new Subject<InputDirection>();
+    private Subject<Unit> clickMenuButtonSubject = new Subject<Unit>();
 
 
     private void Start()
@@ -70,7 +73,7 @@ public class InGameView : MonoBehaviour
 
     public void ClickMenuButton()
     {
-        ClickMenuButtonEvent?.Invoke();
+        clickMenuButtonSubject.OnNext(Unit.Default);
     }
 
 }

@@ -20,7 +20,7 @@ public class InGamePresenter : MonoBehaviour
 
         // Viewの入力を監視する
         inGameView.InputEvent.Subscribe(MoveCells);
-        inGameView.ClickMenuButtonEvent += menuWindowView.OpenWindow;
+        inGameView.ClickMenuButtonEvent.Subscribe(_ => menuWindowView.OpenWindow());
         menuWindowView.ClickRestartButtonEvent += RestartGame;
 
     }
@@ -37,7 +37,7 @@ public class InGamePresenter : MonoBehaviour
     {
         //メニューが開いてる場合は移動させない
         if (menuWindowView.IsOpenWindow()) return;
-        
+
         inGameModel.MoveCells(inputDirection);
     }
 
