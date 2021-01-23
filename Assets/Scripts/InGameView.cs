@@ -19,6 +19,7 @@ public class InGameView : MonoBehaviour
     [SerializeField] private Cell[] cells;
     [SerializeField] private Text scoreText;
     [SerializeField] private Text highScoreText;
+    [SerializeField] private Button menuButton;
 
     private IInput input;
     private Subject<InputDirection> inputSubject = new Subject<InputDirection>();
@@ -27,6 +28,10 @@ public class InGameView : MonoBehaviour
 
     private void Start()
     {
+        //Buttonの入力を監視
+        menuButton.OnClickAsObservable().Subscribe(_ => ClickMenuButton());
+
+        //プラットフォームによって入力クラスを切り替え
         if (Application.platform == RuntimePlatform.Android ||
             Application.platform == RuntimePlatform.IPhonePlayer)
         {
@@ -66,12 +71,13 @@ public class InGameView : MonoBehaviour
     {
         scoreText.text = $"Score: {score}";
     }
+
     public void SetHighScore(int score)
     {
         highScoreText.text = $"Score: {score}";
     }
 
-    public void ClickMenuButton()
+    private void ClickMenuButton()
     {
         menuButtonSubject.OnNext(Unit.Default);
     }
