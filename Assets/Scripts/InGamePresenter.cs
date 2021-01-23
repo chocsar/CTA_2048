@@ -18,10 +18,10 @@ public class InGamePresenter : MonoBehaviour
         inGameModel.ChangeHighScoreEvent += inGameView.SetHighScore;
 
         // Viewの入力を監視する
-        inGameView.InputRightEvent += MoveCellRight;
-        inGameView.InputLeftEvent += MoveCellLeft;
-        inGameView.InputUpEvent += MoveCellUp;
-        inGameView.InputDownEvent += MoveCellDown;
+        inGameView.InputRightEvent += MoveCellsRight;
+        inGameView.InputLeftEvent += MoveCellsLeft;
+        inGameView.InputUpEvent += MoveCellsUp;
+        inGameView.InputDownEvent += MoveCellsDown;
         inGameView.ClickMenuButtonEvent += menuWindowView.OpenWindow;
         menuWindowView.ClickRestartButtonEvent += RestartGame;
 
@@ -35,25 +35,25 @@ public class InGamePresenter : MonoBehaviour
         inGameModel.ResetScore();
     }
 
-    private void MoveCellRight()
+    private void MoveCellsRight()
     {
         if (menuWindowView.IsOpenWindow()) return;
-        inGameModel.MoveCellRight();
+        inGameModel.MoveCellsRight();
     }
-    private void MoveCellLeft()
+    private void MoveCellsLeft()
     {
         if (menuWindowView.IsOpenWindow()) return;
-        inGameModel.MoveCellLeft();
+        inGameModel.MoveCellsLeft();
     }
-    private void MoveCellUp()
+    private void MoveCellsUp()
     {
         if (menuWindowView.IsOpenWindow()) return;
-        inGameModel.MoveCellUp();
+        inGameModel.MoveCellsUp();
     }
-    private void MoveCellDown()
+    private void MoveCellsDown()
     {
         if (menuWindowView.IsOpenWindow()) return;
-        inGameModel.MoveCellDown();
+        inGameModel.MoveCellsDown();
     }
 
     /// <summary>

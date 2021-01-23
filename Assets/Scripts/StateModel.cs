@@ -62,7 +62,7 @@ public class StateModel : MonoBehaviour
     /// <summary>
     /// セルを右に移動させる
     /// </summary>
-    public void MoveCellRight()
+    public void MoveCellsRight()
     {
         isDirty = false;
 
@@ -74,23 +74,13 @@ public class StateModel : MonoBehaviour
             }
         }
 
-        if (isDirty)
-        {
-            CreateNewRandomCell();
-
-            changeStageStatesSubject.OnNext(stageStates);
-
-            if (IsGameOver(stageStates))
-            {
-                gameOverSubject.OnNext(Unit.Default);
-            }
-        }
+        if (isDirty) OnFinishedMoveingCells();
     }
 
     /// <summary>
     /// セルを左に移動させる
     /// </summary>
-    public void MoveCellLeft()
+    public void MoveCellsLeft()
     {
         isDirty = false;
 
@@ -102,23 +92,13 @@ public class StateModel : MonoBehaviour
             }
         }
 
-        if (isDirty)
-        {
-            CreateNewRandomCell();
-
-            changeStageStatesSubject.OnNext(stageStates);
-
-            if (IsGameOver(stageStates))
-            {
-                gameOverSubject.OnNext(Unit.Default);
-            }
-        }
+        if (isDirty) OnFinishedMoveingCells();
     }
 
     /// <summary>
     /// セルを上に移動させる
     /// </summary>
-    public void MoveCellUp()
+    public void MoveCellsUp()
     {
         isDirty = false;
 
@@ -130,23 +110,13 @@ public class StateModel : MonoBehaviour
             }
         }
 
-        if (isDirty)
-        {
-            CreateNewRandomCell();
-
-            changeStageStatesSubject.OnNext(stageStates);
-
-            if (IsGameOver(stageStates))
-            {
-                gameOverSubject.OnNext(Unit.Default);
-            }
-        }
+        if (isDirty) OnFinishedMoveingCells();
     }
 
     /// <summary>
     /// セルを下に移動させる
     /// </summary>
-    public void MoveCellDown()
+    public void MoveCellsDown()
     {
         isDirty = false;
 
@@ -158,17 +128,7 @@ public class StateModel : MonoBehaviour
             }
         }
 
-        if (isDirty)
-        {
-            CreateNewRandomCell();
-
-            changeStageStatesSubject.OnNext(stageStates);
-
-            if (IsGameOver(stageStates))
-            {
-                gameOverSubject.OnNext(Unit.Default);
-            }
-        }
+        if (isDirty) OnFinishedMoveingCells();
     }
 
     /// <summary>
@@ -265,9 +225,25 @@ public class StateModel : MonoBehaviour
     }
 
     /// <summary>
+    /// セルを移動し終えた時の処理（新規セルの作成, ステージの画面反映, ゲームオーバー判定）
+    /// </summary>
+    private void OnFinishedMoveingCells()
+    {
+        //新たなセルを作成
+        CreateNewRandomCell();
+        //ステージの状態を画面に反映
+        changeStageStatesSubject.OnNext(stageStates);
+        //ゲームオーバーの判定
+        if (IsGameOver(stageStates))
+        {
+            gameOverSubject.OnNext(Unit.Default);
+        }
+    }
+
+    /// <summary>
     /// セルを新しく生成する
     /// </summary>
-    public void CreateNewRandomCell()
+    private void CreateNewRandomCell()
     {
         // ゲーム終了時はスポーンしない
         if (IsGameOver(stageStates))
