@@ -21,7 +21,7 @@ public class InGamePresenter : MonoBehaviour
         // Viewの入力を監視する
         inGameView.InputEvent.Subscribe(MoveCells);
         inGameView.ClickMenuButtonEvent.Subscribe(_ => menuWindowView.OpenWindow());
-        menuWindowView.ClickRestartButtonEvent += RestartGame;
+        menuWindowView.ClickRestartButtonEvent.Subscribe(_ => RestartGame());
 
     }
 

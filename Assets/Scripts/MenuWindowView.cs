@@ -1,10 +1,16 @@
 ﻿using System.Collections;
 using System;
 using UnityEngine;
+using UniRx;
 
 public class MenuWindowView : MonoBehaviour
 {
-    public event Action ClickRestartButtonEvent;
+    public IObservable<Unit> ClickRestartButtonEvent
+    {
+        get { return clickRestartButtonSubject; }
+    }
+
+    private Subject<Unit> clickRestartButtonSubject = new Subject<Unit>();
 
     /// <summary>
     /// Windowを非表示にする
@@ -27,7 +33,7 @@ public class MenuWindowView : MonoBehaviour
     /// </summary>
     public void ClickRestartButton()
     {
-        ClickRestartButtonEvent?.Invoke();
+        clickRestartButtonSubject.OnNext(Unit.Default);
     }
 
     /// <summary>
