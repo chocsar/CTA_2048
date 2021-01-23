@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using System;
 
@@ -6,43 +6,47 @@ public class InGameView : MonoBehaviour
 {
     private const int StageSize = 4;
 
-    public event Action InputRightKeyEvent;
-    public event Action InputLeftKeyEvent;
-    public event Action InputUpKeyEvent;
-    public event Action InputDownKeyEvent;
+    public event Action InputRightEvent;
+    public event Action InputLeftEvent;
+    public event Action InputUpEvent;
+    public event Action InputDownEvent;
     public event Action ClickMenuButtonEvent;
 
     [SerializeField] private Cell[] cells;
     [SerializeField] private Text scoreText;
     [SerializeField] private Text highScoreText;
 
+    private IInput input;
+
+    private void Start()
+    {
+        if (Application.platform == RuntimePlatform.Android ||
+            Application.platform == RuntimePlatform.IPhonePlayer)
+        {
+            input = new SmartphoneInput();
+        }
+        else
+        {
+            input = new PCInput();
+        }
+    }
 
     private void Update()
     {
-        InputKey();
-    }
-
-    /// <summary>
-    /// ユーザーからのキー入力を受け取る
-    /// </summary>
-    private void InputKey()
-    {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        switch (input.GetInput())
         {
-            //nullチェック
-            InputRightKeyEvent?.Invoke();
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            InputLeftKeyEvent?.Invoke();
-        }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            InputUpKeyEvent?.Invoke();
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            InputDownKeyEvent?.Invoke();
+            case InputDirection.Right:
+                InputRightEvent?.Invoke();
+                break;
+            case InputDirection.Left:
+                InputLeftEvent?.Invoke();
+                break;
+            case InputDirection.Up:
+                InputUpEvent?.Invoke();
+                break;
+            case InputDirection.Down:
+                InputDownEvent?.Invoke();
+                break;
         }
     }
 

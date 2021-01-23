@@ -13,7 +13,7 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBe
             {
                 Type t = typeof(T);
 
-                instance = (T)FindObjectOfType (t);
+                instance = (T)FindObjectOfType(t);
                 if (instance == null)
                 {
                     //アタッチしているGameObjectがない場合は自動生成する
@@ -44,7 +44,7 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBe
         {
             return true;
         }
-        Destroy (this);
+        Destroy(this);
         return false;
     }
 }
