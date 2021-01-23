@@ -1,4 +1,5 @@
 using UnityEngine;
+using UniRx;
 
 public class InGamePresenter : MonoBehaviour
 {
@@ -18,10 +19,10 @@ public class InGamePresenter : MonoBehaviour
         inGameModel.ChangeHighScoreEvent += inGameView.SetHighScore;
 
         // Viewの入力を監視する
-        inGameView.InputRightEvent += MoveCellsRight;
-        inGameView.InputLeftEvent += MoveCellsLeft;
-        inGameView.InputUpEvent += MoveCellsUp;
-        inGameView.InputDownEvent += MoveCellsDown;
+        inGameView.InputRightEvent.Subscribe(_ => MoveCellsRight());
+        inGameView.InputLeftEvent.Subscribe(_ => MoveCellsLeft());
+        inGameView.InputUpEvent.Subscribe(_ => MoveCellsUp());
+        inGameView.InputDownEvent.Subscribe(_ => MoveCellsDown());
         inGameView.ClickMenuButtonEvent += menuWindowView.OpenWindow;
         menuWindowView.ClickRestartButtonEvent += RestartGame;
 

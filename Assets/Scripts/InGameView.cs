@@ -1,15 +1,29 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using UniRx;
 
 public class InGameView : MonoBehaviour
 {
     private const int StageSize = 4;
 
-    public event Action InputRightEvent;
-    public event Action InputLeftEvent;
-    public event Action InputUpEvent;
-    public event Action InputDownEvent;
+    public IObservable<Unit> InputRightEvent
+    {
+        get { return inputRightSubject; }
+    }
+    public IObservable<Unit> InputLeftEvent
+    {
+        get { return inputLeftSubject; }
+    }
+    public IObservable<Unit> InputUpEvent
+    {
+        get { return inputUpSubject; }
+    }
+    public IObservable<Unit> InputDownEvent
+    {
+        get { return inputDownSubject; }
+    }
+
     public event Action ClickMenuButtonEvent;
 
     [SerializeField] private Cell[] cells;
@@ -17,6 +31,11 @@ public class InGameView : MonoBehaviour
     [SerializeField] private Text highScoreText;
 
     private IInput input;
+    private Subject<Unit> inputRightSubject = new Subject<Unit>();
+    private Subject<Unit> inputLeftSubject = new Subject<Unit>();
+    private Subject<Unit> inputUpSubject = new Subject<Unit>();
+    private Subject<Unit> inputDownSubject = new Subject<Unit>();
+
 
     private void Start()
     {
@@ -36,16 +55,16 @@ public class InGameView : MonoBehaviour
         switch (input.GetInput())
         {
             case InputDirection.Right:
-                InputRightEvent?.Invoke();
+                inputRightSubject.OnNext(Unit.Default);
                 break;
             case InputDirection.Left:
-                InputLeftEvent?.Invoke();
+                inputLeftSubject.OnNext(Unit.Default);
                 break;
             case InputDirection.Up:
-                InputUpEvent?.Invoke();
+                inputUpSubject.OnNext(Unit.Default);
                 break;
             case InputDirection.Down:
-                InputDownEvent?.Invoke();
+                inputDownSubject.OnNext(Unit.Default);
                 break;
         }
     }
