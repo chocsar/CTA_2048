@@ -13,10 +13,10 @@ public class InGamePresenter : MonoBehaviour
         inGameView = GetComponent<InGameView>();
 
         // Modelの値の変更を監視する
-        inGameModel.ChangeStageStateEvent += inGameView.ApplyStage;
-        inGameModel.GameOverEvent += GameOver;
-        inGameModel.ChangeScoreEvent += inGameView.SetScore;
-        inGameModel.ChangeHighScoreEvent += inGameView.SetHighScore;
+        inGameModel.ChangeStageStatesEvent.Subscribe(inGameView.ApplyStage);
+        inGameModel.ChangeScoreEvent.Subscribe(inGameView.SetScore);
+        inGameModel.ChangeHighScoreEvent.Subscribe(inGameView.SetHighScore);
+        inGameModel.GameOverEvent.Subscribe(_ => GameOver());
 
         // Viewの入力を監視する
         inGameView.InputEvent.Subscribe(MoveCells);

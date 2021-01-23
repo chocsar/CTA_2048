@@ -4,13 +4,30 @@ using UniRx;
 
 public class InGameModel : MonoBehaviour
 {
-    public event Action<int[,]> ChangeStageStateEvent;
-    public event Action GameOverEvent;
-    public event Action<int> ChangeScoreEvent;
-    public event Action<int> ChangeHighScoreEvent;
+    public IObservable<int[,]> ChangeStageStatesEvent
+    {
+        get { return changeStageStatesSubject; }
+    }
+    public IObservable<int> ChangeScoreEvent
+    {
+        get { return changeScoreSubject; }
+    }
+    public IObservable<int> ChangeHighScoreEvent
+    {
+        get { return changeHighScoreSubject; }
+    }
+    public IObservable<Unit> GameOverEvent
+    {
+        get { return gameOverSubject; }
+    }
 
     private StateModel stateModel;
     private ScoreModel scoreModel;
+
+    private Subject<int[,]> changeStageStatesSubject = new Subject<int[,]>();
+    private Subject<int> changeScoreSubject = new Subject<int>();
+    private Subject<int> changeHighScoreSubject = new Subject<int>();
+    private Subject<Unit> gameOverSubject = new Subject<Unit>();
 
     private void Awake()
     {
@@ -74,22 +91,22 @@ public class InGameModel : MonoBehaviour
 
     private void ChangeStageStates(int[,] stageState)
     {
-        ChangeStageStateEvent?.Invoke(stageState);
-    }
-
-    private void GameOver()
-    {
-        GameOverEvent?.Invoke();
+        changeStageStatesSubject.OnNext(stageState);
     }
 
     private void ChangeScore(int score)
     {
-        ChangeScoreEvent?.Invoke(score);
+        changeScoreSubject.OnNext(score);
     }
 
     private void ChangeHighScore(int highScore)
     {
-        ChangeHighScoreEvent?.Invoke(highScore);
+        changeHighScoreSubject.OnNext(highScore);
+    }
+
+    private void GameOver()
+    {
+        gameOverSubject.OnNext(Unit.Default);
     }
 
 
