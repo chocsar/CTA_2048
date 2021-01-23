@@ -19,10 +19,7 @@ public class InGamePresenter : MonoBehaviour
         inGameModel.ChangeHighScoreEvent += inGameView.SetHighScore;
 
         // Viewの入力を監視する
-        inGameView.InputRightEvent.Subscribe(_ => MoveCellsRight());
-        inGameView.InputLeftEvent.Subscribe(_ => MoveCellsLeft());
-        inGameView.InputUpEvent.Subscribe(_ => MoveCellsUp());
-        inGameView.InputDownEvent.Subscribe(_ => MoveCellsDown());
+        inGameView.InputEvent.Subscribe(MoveCells);
         inGameView.ClickMenuButtonEvent += menuWindowView.OpenWindow;
         menuWindowView.ClickRestartButtonEvent += RestartGame;
 
@@ -36,25 +33,12 @@ public class InGamePresenter : MonoBehaviour
         inGameModel.ResetScore();
     }
 
-    private void MoveCellsRight()
+    private void MoveCells(InputDirection inputDirection)
     {
+        //メニューが開いてる場合は移動させない
         if (menuWindowView.IsOpenWindow()) return;
-        inGameModel.MoveCellsRight();
-    }
-    private void MoveCellsLeft()
-    {
-        if (menuWindowView.IsOpenWindow()) return;
-        inGameModel.MoveCellsLeft();
-    }
-    private void MoveCellsUp()
-    {
-        if (menuWindowView.IsOpenWindow()) return;
-        inGameModel.MoveCellsUp();
-    }
-    private void MoveCellsDown()
-    {
-        if (menuWindowView.IsOpenWindow()) return;
-        inGameModel.MoveCellsDown();
+        
+        inGameModel.MoveCells(inputDirection);
     }
 
     /// <summary>

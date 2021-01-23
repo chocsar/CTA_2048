@@ -7,21 +7,9 @@ public class InGameView : MonoBehaviour
 {
     private const int StageSize = 4;
 
-    public IObservable<Unit> InputRightEvent
+    public IObservable<InputDirection> InputEvent
     {
-        get { return inputRightSubject; }
-    }
-    public IObservable<Unit> InputLeftEvent
-    {
-        get { return inputLeftSubject; }
-    }
-    public IObservable<Unit> InputUpEvent
-    {
-        get { return inputUpSubject; }
-    }
-    public IObservable<Unit> InputDownEvent
-    {
-        get { return inputDownSubject; }
+        get { return inputSubject; }
     }
 
     public event Action ClickMenuButtonEvent;
@@ -31,10 +19,7 @@ public class InGameView : MonoBehaviour
     [SerializeField] private Text highScoreText;
 
     private IInput input;
-    private Subject<Unit> inputRightSubject = new Subject<Unit>();
-    private Subject<Unit> inputLeftSubject = new Subject<Unit>();
-    private Subject<Unit> inputUpSubject = new Subject<Unit>();
-    private Subject<Unit> inputDownSubject = new Subject<Unit>();
+    private Subject<InputDirection> inputSubject = new Subject<InputDirection>();
 
 
     private void Start()
@@ -52,20 +37,11 @@ public class InGameView : MonoBehaviour
 
     private void Update()
     {
-        switch (input.GetInput())
+        InputDirection inputDirection = input.GetInput();
+        
+        if(inputDirection != InputDirection.None)
         {
-            case InputDirection.Right:
-                inputRightSubject.OnNext(Unit.Default);
-                break;
-            case InputDirection.Left:
-                inputLeftSubject.OnNext(Unit.Default);
-                break;
-            case InputDirection.Up:
-                inputUpSubject.OnNext(Unit.Default);
-                break;
-            case InputDirection.Down:
-                inputDownSubject.OnNext(Unit.Default);
-                break;
+            inputSubject.OnNext(inputDirection);
         }
     }
 

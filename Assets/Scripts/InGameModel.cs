@@ -32,24 +32,9 @@ public class InGameModel : MonoBehaviour
         stateModel.InitStage();
     }
 
-    public void MoveCellsRight()
+    public void MoveCells(InputDirection inputDirection)
     {
-        stateModel.MoveCellsRight();
-    }
-
-    public void MoveCellsLeft()
-    {
-        stateModel.MoveCellsLeft();
-    }
-
-    public void MoveCellsUp()
-    {
-        stateModel.MoveCellsUp();
-    }
-
-    public void MoveCellsDown()
-    {
-        stateModel.MoveCellsDown();
+        stateModel.MoveCells(inputDirection);
     }
 
     public int GetScore()

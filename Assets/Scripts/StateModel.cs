@@ -60,74 +60,57 @@ public class StateModel : MonoBehaviour
     }
 
     /// <summary>
-    /// セルを右に移動させる
+    /// セルを移動させる
     /// </summary>
-    public void MoveCellsRight()
+    public void MoveCells(InputDirection inputDirection)
     {
         isDirty = false;
 
-        for (var col = StageSize; col >= 0; col--)
+        switch(inputDirection)
         {
-            for (var row = 0; row < StageSize; row++)
-            {
-                MoveCell(row, col, 1, 0);
-            }
+            //セルを右に移動
+            case InputDirection.Right:
+                for (var col = StageSize; col >= 0; col--)
+                {
+                    for (var row = 0; row < StageSize; row++)
+                    {
+                        MoveCell(row, col, 1, 0);
+                    }
+                }
+                break;
+            //セルを左に移動
+            case InputDirection.Left:
+                for (var row = 0; row < StageSize; row++)
+                {
+                    for (var col = 0; col < StageSize; col++)
+                    {
+                        MoveCell(row, col, -1, 0);
+                    }
+                }
+                break;
+            //セルを上に移動
+            case InputDirection.Up:
+                for (var row = 0; row < StageSize; row++)
+                {
+                    for (var col = 0; col < StageSize; col++)
+                    {
+                        MoveCell(row, col, 0, -1);
+                    }
+                }
+                break;
+            //セルを下に移動
+            case InputDirection.Down:
+                for (var row = StageSize; row >= 0; row--)
+                {
+                    for (var col = 0; col < StageSize; col++)
+                    {
+                        MoveCell(row, col, 0, 1);
+                    }
+                }
+                break;
         }
 
-        if (isDirty) OnFinishedMoveingCells();
-    }
-
-    /// <summary>
-    /// セルを左に移動させる
-    /// </summary>
-    public void MoveCellsLeft()
-    {
-        isDirty = false;
-
-        for (var row = 0; row < StageSize; row++)
-        {
-            for (var col = 0; col < StageSize; col++)
-            {
-                MoveCell(row, col, -1, 0);
-            }
-        }
-
-        if (isDirty) OnFinishedMoveingCells();
-    }
-
-    /// <summary>
-    /// セルを上に移動させる
-    /// </summary>
-    public void MoveCellsUp()
-    {
-        isDirty = false;
-
-        for (var row = 0; row < StageSize; row++)
-        {
-            for (var col = 0; col < StageSize; col++)
-            {
-                MoveCell(row, col, 0, -1);
-            }
-        }
-
-        if (isDirty) OnFinishedMoveingCells();
-    }
-
-    /// <summary>
-    /// セルを下に移動させる
-    /// </summary>
-    public void MoveCellsDown()
-    {
-        isDirty = false;
-
-        for (var row = StageSize; row >= 0; row--)
-        {
-            for (var col = 0; col < StageSize; col++)
-            {
-                MoveCell(row, col, 0, 1);
-            }
-        }
-
+        //ステートの更新があった場合
         if (isDirty) OnFinishedMoveingCells();
     }
 
