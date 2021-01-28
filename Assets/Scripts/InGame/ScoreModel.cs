@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UniRx;
+using System.IO;
 
 public class ScoreModel : MonoBehaviour
 {
@@ -97,5 +98,47 @@ public class ScoreModel : MonoBehaviour
     public int LoadHighScore()
     {
         return ScoreManager.Instance.LoadHighScore();
+    }
+
+    public void SaveRanking()
+    {
+        int score = GetScore();
+
+        string filePath = Application.dataPath + "/ScoreRanking.txt";
+        bool isAppend = false;
+        string allText = null;
+
+        //ファイルのロード
+        using (StreamReader reader = new StreamReader(filePath))
+        {
+            //ファイルにデータがない場合
+            if (reader.Peek() == -1)
+            {
+                allText += score.ToString() + "\n";
+            }
+            else
+            {
+                bool isWritten = false;
+
+                while (reader.Peek() != -1)
+                {
+                    string line = reader.ReadLine();
+
+                    //今回のスコアを追加
+                    if (int.Parse(line) < score && !isWritten)
+                    {
+                        isWritten = true;
+                        allText += score.ToString() + "\n";
+                    }
+
+                    allText += line + "\n";
+                }
+            }
+        }
+        //ファイルのセーブ
+        using (StreamWriter writer = new StreamWriter(filePath, isAppend))
+        {
+            writer.Write(allText);
+        }
     }
 }
