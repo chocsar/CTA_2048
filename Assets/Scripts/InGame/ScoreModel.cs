@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using System.Collections.Generic;
 using UniRx;
 using System.IO;
 
@@ -97,7 +98,9 @@ public class ScoreModel : MonoBehaviour
     /// <returns>ハイスコア</returns>
     public int LoadHighScore()
     {
-        string filePath = Application.dataPath + "/ScoreRanking.txt";
+        string filePath = Application.dataPath + FilePath.ScoreRanking;
+
+        //ファイルからロード
         using (StreamReader reader = new StreamReader(filePath))
         {
             if (reader.Peek() == -1)
@@ -106,6 +109,7 @@ public class ScoreModel : MonoBehaviour
             }
             else
             {
+                //一行目に書かれた値を返す
                 return int.Parse(reader.ReadLine());
             }
         }
@@ -118,7 +122,7 @@ public class ScoreModel : MonoBehaviour
     {
         int score = GetScore();
 
-        string filePath = Application.dataPath + "/ScoreRanking.txt";
+        string filePath = Application.dataPath + FilePath.ScoreRanking;
         bool isAppend = false;
         string allText = null;
 
@@ -155,4 +159,27 @@ public class ScoreModel : MonoBehaviour
             writer.Write(allText);
         }
     }
+
+    /// <summary>
+    /// ランキング順のスコアリストを返す
+    /// </summary>
+    /// <returns>ランキング順のスコアリスト</returns>
+    public List<int> LoadRanking()
+    {
+        List<int> scoreList = new List<int>();
+        string filePath = Application.dataPath + FilePath.ScoreRanking;
+
+        //ファイルのロード
+        using (StreamReader reader = new StreamReader(filePath))
+        {
+            while (reader.Peek() != -1)
+            {
+                string line = reader.ReadLine();
+                scoreList.Add(int.Parse(line));
+            }
+        }
+
+        return scoreList;
+    }
+
 }
