@@ -97,9 +97,23 @@ public class ScoreModel : MonoBehaviour
     /// <returns>ハイスコア</returns>
     public int LoadHighScore()
     {
-        return ScoreManager.Instance.LoadHighScore();
+        string filePath = Application.dataPath + "/ScoreRanking.txt";
+        using (StreamReader reader = new StreamReader(filePath))
+        {
+            if (reader.Peek() == -1)
+            {
+                return 0;
+            }
+            else
+            {
+                return int.Parse(reader.ReadLine());
+            }
+        }
     }
 
+    /// <summary>
+    /// スコアをランキング形式でファイルに保存する
+    /// </summary>
     public void SaveRanking()
     {
         int score = GetScore();
