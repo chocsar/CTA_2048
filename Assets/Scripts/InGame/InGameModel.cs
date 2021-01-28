@@ -89,6 +89,11 @@ public class InGameModel : MonoBehaviour
         return scoreModel.LoadHighScore();
     }
 
+    public void SaveRanking()
+    {
+        scoreModel.SaveRanking();
+    }
+
     private void ChangeStageStates(int[,] stageState)
     {
         stageStatesSubject.OnNext(stageState);

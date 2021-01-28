@@ -46,7 +46,7 @@ public class InGamePresenter : MonoBehaviour
     /// </summary>
     private void GameOver()
     {
-        inGameModel.SaveHighScore();
+        inGameModel.SaveRanking();
         inGameModel.SaveScore(inGameModel.GetScore());
         LoadResultScene();
     }
@@ -56,7 +56,7 @@ public class InGamePresenter : MonoBehaviour
     /// </summary>
     private void RestartGame()
     {
-        inGameModel.SaveHighScore();
+        inGameModel.SaveRanking();
 
         inGameModel.InitStage();
         inGameModel.SetHighScore(inGameModel.LoadHighScore());
