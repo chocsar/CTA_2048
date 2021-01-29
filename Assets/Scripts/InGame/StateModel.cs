@@ -11,11 +11,11 @@ public class StateModel : MonoBehaviour
     private const int SecondDimension = 1;
 
     public IObservable<int[,]> ChangeStageStatesEvent => stageStatesSubject;
-    public IObservable<int> ChangeScoreEvent => scoreSubject;
+    public IObservable<int> MergeCellsEvent => mergeSubject;
     public IObservable<Unit> GameOverEvent => gameOverSubject;
 
     private Subject<int[,]> stageStatesSubject = new Subject<int[,]>();
-    private Subject<int> scoreSubject = new Subject<int>();
+    private Subject<int> mergeSubject = new Subject<int>();
     private Subject<Unit> gameOverSubject = new Subject<Unit>();
 
     private readonly int[,] stageStates = new int[4, 4];
@@ -147,7 +147,7 @@ public class StateModel : MonoBehaviour
         else if (value == nextValue)
         {
             MergeCells(row, col, nextRow, nextCol, value);
-            scoreSubject.OnNext(value);
+            mergeSubject.OnNext(value);
         }
         // 異なる値のときは移動処理を終了
         else if (value != nextValue)

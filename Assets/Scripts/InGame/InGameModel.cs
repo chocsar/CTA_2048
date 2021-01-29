@@ -18,7 +18,7 @@ public class InGameModel : MonoBehaviour
         scoreModel = GetComponent<ScoreModel>();
 
         //StateModelの変更を監視する
-        stateModel.ChangeScoreEvent.Subscribe(scoreModel.SetScore);
+        stateModel.MergeCellsEvent.Subscribe(scoreModel.SetScore);
     }
 
     public void InitStage()
