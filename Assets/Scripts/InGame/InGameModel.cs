@@ -4,18 +4,13 @@ using UniRx;
 
 public class InGameModel : MonoBehaviour
 {
-    public IObservable<int[,]> ChangeStageStatesEvent => stageStatesSubject;
-    public IObservable<int> ChangeScoreEvent => scoreSubject;
-    public IObservable<int> ChangeHighScoreEvent => highScoreSubject;
-    public IObservable<Unit> GameOverEvent => gameOverSubject;
+    public IObservable<int[,]> ChangeStageStatesEvent => stateModel.ChangeStageStatesEvent;
+    public IObservable<Unit> GameOverEvent => stateModel.GameOverEvent;
+    public IObservable<int> ChangeScoreEvent => scoreModel.ChangeScoreEvent;
+    public IObservable<int> ChangeHighScoreEvent => scoreModel.ChangeHighScoreEvent;
 
     private StateModel stateModel;
     private ScoreModel scoreModel;
-
-    private Subject<int[,]> stageStatesSubject = new Subject<int[,]>();
-    private Subject<int> scoreSubject = new Subject<int>();
-    private Subject<int> highScoreSubject = new Subject<int>();
-    private Subject<Unit> gameOverSubject = new Subject<Unit>();
 
     private void Awake()
     {
@@ -23,13 +18,8 @@ public class InGameModel : MonoBehaviour
         scoreModel = GetComponent<ScoreModel>();
 
         //StateModelの変更を監視する
-        stateModel.ChangeStageStatesEvent.Subscribe(ChangeStageStates);
         stateModel.ChangeScoreEvent.Subscribe(scoreModel.SetScore);
-        stateModel.GameOverEvent.Subscribe(_ => GameOver());
 
-        //ScoreModelの変更を監視する
-        scoreModel.ChangeScoreEvent.Subscribe(ChangeScore);
-        scoreModel.ChangeHighScoreEvent.Subscribe(ChangeHighScore);
     }
 
     public void InitStage()
@@ -76,26 +66,4 @@ public class InGameModel : MonoBehaviour
     {
         return scoreModel.LoadHighScore();
     }
-
-    private void ChangeStageStates(int[,] stageState)
-    {
-        stageStatesSubject.OnNext(stageState);
-    }
-
-    private void ChangeScore(int score)
-    {
-        scoreSubject.OnNext(score);
-    }
-
-    private void ChangeHighScore(int highScore)
-    {
-        highScoreSubject.OnNext(highScore);
-    }
-
-    private void GameOver()
-    {
-        gameOverSubject.OnNext(Unit.Default);
-    }
-
-
 }
