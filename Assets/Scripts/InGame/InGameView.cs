@@ -10,6 +10,7 @@ public class InGameView : MonoBehaviour
     public IObservable<InputDirection> InputEvent => inputSubject;
     public IObservable<Unit> ClickMenuButtonEvent => menuButton.OnClickAsObservable();
     public IObservable<Unit> ClickRankingButtonEvent => rankingButton.OnClickAsObservable();
+
     [SerializeField] private Cell[] cells;
     [SerializeField] private Text scoreText;
     [SerializeField] private Text highScoreText;

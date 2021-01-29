@@ -78,6 +78,11 @@ public class ScoreManager : SingletonMonoBehaviour<ScoreManager>
 
                     allText += line + "\n";
                 }
+                //スコアが最も低かった場合
+                if (!isWritten)
+                {
+                    allText += score.ToString() + "\n";
+                }
             }
         }
         //ファイルのセーブ
