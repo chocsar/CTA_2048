@@ -43,8 +43,8 @@ public class InGamePresenter : MonoBehaviour
 
     private void MoveCells(InputDirection inputDirection)
     {
-        //メニューが開いてる場合は移動させない
-        if (menuWindowView.IsOpenWindow()) return;
+        //メニューかランキングを開いてる場合は移動させない
+        if (menuWindowView.IsOpenWindow() || rankingWindowPresenter.IsOpenWindow()) return;
 
         inGameModel.MoveCells(inputDirection);
     }
