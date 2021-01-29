@@ -56,11 +56,6 @@ public class InGameModel : MonoBehaviour
         scoreModel.SaveScore(score);
     }
 
-    public void SaveHighScore()
-    {
-        scoreModel.SaveHighScore();
-    }
-
     public int LoadHighScore()
     {
         return scoreModel.LoadHighScore();

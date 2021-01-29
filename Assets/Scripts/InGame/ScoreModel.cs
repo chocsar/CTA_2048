@@ -72,20 +72,6 @@ public class ScoreModel : MonoBehaviour
     }
 
     /// <summary>
-    /// ハイスコアをセーブする
-    /// </summary>
-    public void SaveHighScore()
-    {
-        int score = GetScore();
-        int highScore = GetHighScore();
-
-        if (score == highScore)
-        {
-            ScoreManager.Instance.SaveHighScore(highScore);
-        }
-    }
-
-    /// <summary>
     /// ハイスコアをロードする
     /// </summary>
     /// <returns>ハイスコア</returns>
@@ -101,15 +87,6 @@ public class ScoreModel : MonoBehaviour
     public void SaveRanking(int score)
     {
         ScoreManager.Instance.SaveRanking(score);
-    }
-
-    /// <summary>
-    /// ランキング順のスコアリストを返す
-    /// </summary>
-    /// <returns>ランキング順のスコアリスト</returns>
-    public List<int> LoadRanking() //これはRankingWindowのModelに実装すべき？
-    {
-        return ScoreManager.Instance.LoadRanking();
     }
 
 }
