@@ -6,20 +6,15 @@ using UniRx;
 
 public class MenuWindowView : MonoBehaviour
 {
-    public IObservable<Unit> ClickRestartButtonEvent
-    {
-        get { return restartButtonSubject; }
-    }
+    public IObservable<Unit> ClickRestartButtonEvent => restartButton.OnClickAsObservable();
 
     [SerializeField] private Button closeButton;
     [SerializeField] private Button restartButton;
-    private Subject<Unit> restartButtonSubject = new Subject<Unit>();
 
     private void Start()
     {
         //Buttonの入力を監視
         closeButton.OnClickAsObservable().Subscribe(_ => CloseWindow());
-        restartButton.OnClickAsObservable().Subscribe(_ => ClickRestartButton());
     }
 
     /// <summary>
@@ -42,20 +37,11 @@ public class MenuWindowView : MonoBehaviour
     /// <summary>
     /// Windowを非表示にする
     /// </summary>
-    private void CloseWindow()
+    public void CloseWindow()
     {
         gameObject.SetActive(false);
     }
 
-    /// <summary>
-    /// リスタートボタンを押した時の処理
-    /// </summary>
-    private void ClickRestartButton()
-    {
-        restartButtonSubject.OnNext(Unit.Default);
-        CloseWindow();
-    }
 
-    
 
 }

@@ -7,19 +7,9 @@ public class InGameView : MonoBehaviour
 {
     private const int StageSize = 4;
 
-    public IObservable<InputDirection> InputEvent
-    {
-        get { return inputSubject; }
-    }
-    public IObservable<Unit> ClickMenuButtonEvent
-    {
-        get { return menuButtonSubject; }
-    }
-    public IObservable<Unit> ClickRankingButtonEvent
-    {
-        get { return rankingButtonSubject; }
-    }
-
+    public IObservable<InputDirection> InputEvent => inputSubject;
+    public IObservable<Unit> ClickMenuButtonEvent => menuButton.OnClickAsObservable();
+    public IObservable<Unit> ClickRankingButtonEvent => rankingButton.OnClickAsObservable();
     [SerializeField] private Cell[] cells;
     [SerializeField] private Text scoreText;
     [SerializeField] private Text highScoreText;
@@ -28,16 +18,10 @@ public class InGameView : MonoBehaviour
 
     private IInput input;
     private Subject<InputDirection> inputSubject = new Subject<InputDirection>();
-    private Subject<Unit> menuButtonSubject = new Subject<Unit>();
-    private Subject<Unit> rankingButtonSubject = new Subject<Unit>();
 
 
     private void Start()
     {
-        //Buttonの入力を監視
-        menuButton.OnClickAsObservable().Subscribe(_ => ClickMenuButton());
-        rankingButton.OnClickAsObservable().Subscribe(_ => ClickRankingButton());
-
         //プラットフォームによって入力クラスを切り替え
         if (Application.platform == RuntimePlatform.Android ||
             Application.platform == RuntimePlatform.IPhonePlayer)
@@ -82,16 +66,6 @@ public class InGameView : MonoBehaviour
     public void SetHighScore(int score)
     {
         highScoreText.text = $"Score: {score}";
-    }
-
-    private void ClickMenuButton()
-    {
-        menuButtonSubject.OnNext(Unit.Default);
-    }
-
-    private void ClickRankingButton()
-    {
-        rankingButtonSubject.OnNext(Unit.Default);
     }
 
 }

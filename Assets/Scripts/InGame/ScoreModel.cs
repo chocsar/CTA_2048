@@ -5,14 +5,8 @@ using UniRx;
 
 public class ScoreModel : MonoBehaviour
 {
-    public IObservable<int> ChangeScoreEvent
-    {
-        get { return score; }
-    }
-    public IObservable<int> ChangeHighScoreEvent
-    {
-        get { return highScore; }
-    }
+    public IObservable<int> ChangeScoreEvent => score;
+    public IObservable<int> ChangeHighScoreEvent => highScore;
 
     private ReactiveProperty<int> score = new ReactiveProperty<int>();
     private ReactiveProperty<int> highScore = new ReactiveProperty<int>();

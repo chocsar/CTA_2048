@@ -16,10 +16,11 @@ public class InGamePresenter : MonoBehaviour
 
     private Subject<Unit> rankingWindowSubject = new Subject<Unit>();
 
-    private void Awake()
+    private void Start()
     {
         inGameModel = GetComponent<InGameModel>();
         inGameView = GetComponent<InGameView>();
+        inGameModel.Initialize();
 
         // Modelの値の変更を監視する
         inGameModel.ChangeStageStatesEvent.Subscribe(inGameView.ApplyStage);
@@ -33,11 +34,7 @@ public class InGamePresenter : MonoBehaviour
         menuWindowView.ClickRestartButtonEvent.Subscribe(_ => RestartGame());
         inGameView.ClickRankingButtonEvent.Subscribe(_ => rankingWindowPresenter.OpenWindow());
 
-    }
-
-    private void Start()
-    {
-        // 初期化
+        // ゲームの初期化
         inGameModel.InitStage();
         inGameModel.SetHighScore(inGameModel.LoadHighScore());
         inGameModel.ResetScore();
@@ -71,6 +68,8 @@ public class InGamePresenter : MonoBehaviour
         inGameModel.InitStage();
         inGameModel.SetHighScore(inGameModel.LoadHighScore());
         inGameModel.ResetScore();
+
+        menuWindowView.CloseWindow();
     }
 
     /// <summary>
