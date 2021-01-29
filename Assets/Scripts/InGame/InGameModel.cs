@@ -12,14 +12,13 @@ public class InGameModel : MonoBehaviour
     private StateModel stateModel;
     private ScoreModel scoreModel;
 
-    private void Awake()
+    public void Initialize()
     {
         stateModel = GetComponent<StateModel>();
         scoreModel = GetComponent<ScoreModel>();
 
         //StateModelの変更を監視する
         stateModel.ChangeScoreEvent.Subscribe(scoreModel.SetScore);
-
     }
 
     public void InitStage()

@@ -7,10 +7,11 @@ public class InGamePresenter : MonoBehaviour
     private InGameView inGameView;
     [SerializeField] private MenuWindowView menuWindowView;
 
-    private void Awake()
+    private void Start()
     {
         inGameModel = GetComponent<InGameModel>();
         inGameView = GetComponent<InGameView>();
+        inGameModel.Initialize();
 
         // Modelの値の変更を監視する
         inGameModel.ChangeStageStatesEvent.Subscribe(inGameView.ApplyStage);
@@ -23,11 +24,7 @@ public class InGamePresenter : MonoBehaviour
         inGameView.ClickMenuButtonEvent.Subscribe(_ => menuWindowView.OpenWindow());
         menuWindowView.ClickRestartButtonEvent.Subscribe(_ => RestartGame());
 
-    }
-
-    private void Start()
-    {
-        // 初期化
+        // ゲームの初期化
         inGameModel.InitStage();
         inGameModel.SetHighScore(inGameModel.LoadHighScore());
         inGameModel.ResetScore();
