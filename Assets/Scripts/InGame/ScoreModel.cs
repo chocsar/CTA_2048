@@ -2,7 +2,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UniRx;
-using System.IO;
 
 public class ScoreModel : MonoBehaviour
 {
