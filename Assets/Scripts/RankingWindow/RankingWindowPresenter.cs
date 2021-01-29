@@ -1,27 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
 
 public class RankingWindowPresenter : MonoBehaviour
 {
     private RankingWindowModel rankingWindowModel;
     private RankingWindowView rankingWindowView;
 
-    void Awake()
+    public void Initialize()
     {
         rankingWindowModel = GetComponent<RankingWindowModel>();
         rankingWindowView = GetComponent<RankingWindowView>();
+
+        rankingWindowModel.ChangeRankingEvent.Subscribe(rankingWindowView.SetRanking);
     }
 
     public void OpenWindow()
     {
-        rankingWindowModel = GetComponent<RankingWindowModel>();
-        rankingWindowView = GetComponent<RankingWindowView>();
-
         rankingWindowModel.SetRanking(rankingWindowModel.LoadRanking());
-        rankingWindowView.SetRanking(rankingWindowModel.GetRanking());
         rankingWindowView.OpenWindow();
     }
+
 
 
 }
