@@ -7,14 +7,8 @@ public class InGameView : MonoBehaviour
 {
     private const int StageSize = 4;
 
-    public IObservable<InputDirection> InputEvent
-    {
-        get { return inputSubject; }
-    }
-    public IObservable<Unit> ClickMenuButtonEvent
-    {
-        get { return menuButtonSubject; }
-    }
+    public IObservable<InputDirection> InputEvent => inputSubject;
+    public IObservable<Unit> ClickMenuButtonEvent => menuButtonSubject;
 
     [SerializeField] private Cell[] cells;
     [SerializeField] private Text scoreText;
@@ -46,8 +40,8 @@ public class InGameView : MonoBehaviour
     private void Update()
     {
         InputDirection inputDirection = input.GetInput();
-        
-        if(inputDirection != InputDirection.None)
+
+        if (inputDirection != InputDirection.None)
         {
             inputSubject.OnNext(inputDirection);
         }

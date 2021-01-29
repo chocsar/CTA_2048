@@ -6,10 +6,7 @@ using UniRx;
 
 public class MenuWindowView : MonoBehaviour
 {
-    public IObservable<Unit> ClickRestartButtonEvent
-    {
-        get { return restartButtonSubject; }
-    }
+    public IObservable<Unit> ClickRestartButtonEvent => restartButtonSubject;
 
     [SerializeField] private Button closeButton;
     [SerializeField] private Button restartButton;
@@ -56,6 +53,6 @@ public class MenuWindowView : MonoBehaviour
         CloseWindow();
     }
 
-    
+
 
 }

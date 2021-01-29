@@ -10,18 +10,10 @@ public class StateModel : MonoBehaviour
     private const int FirstDimension = 0;
     private const int SecondDimension = 1;
 
-    public IObservable<int[,]> ChangeStageStatesEvent
-    {
-        get { return stageStatesSubject; }
-    }
-    public IObservable<int> ChangeScoreEvent
-    {
-        get { return scoreSubject; }
-    }
-    public IObservable<Unit> GameOverEvent
-    {
-        get { return gameOverSubject; }
-    }
+    public IObservable<int[,]> ChangeStageStatesEvent => stageStatesSubject;
+    public IObservable<int> ChangeScoreEvent => scoreSubject;
+    public IObservable<Unit> GameOverEvent => gameOverSubject;
+
     private Subject<int[,]> stageStatesSubject = new Subject<int[,]>();
     private Subject<int> scoreSubject = new Subject<int>();
     private Subject<Unit> gameOverSubject = new Subject<Unit>();
@@ -66,7 +58,7 @@ public class StateModel : MonoBehaviour
     {
         isDirty = false;
 
-        switch(inputDirection)
+        switch (inputDirection)
         {
             //セルを右に移動
             case InputDirection.Right:

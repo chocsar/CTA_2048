@@ -4,22 +4,10 @@ using UniRx;
 
 public class InGameModel : MonoBehaviour
 {
-    public IObservable<int[,]> ChangeStageStatesEvent
-    {
-        get { return stageStatesSubject; }
-    }
-    public IObservable<int> ChangeScoreEvent
-    {
-        get { return scoreSubject; }
-    }
-    public IObservable<int> ChangeHighScoreEvent
-    {
-        get { return highScoreSubject; }
-    }
-    public IObservable<Unit> GameOverEvent
-    {
-        get { return gameOverSubject; }
-    }
+    public IObservable<int[,]> ChangeStageStatesEvent => stageStatesSubject;
+    public IObservable<int> ChangeScoreEvent => scoreSubject;
+    public IObservable<int> ChangeHighScoreEvent => highScoreSubject;
+    public IObservable<Unit> GameOverEvent => gameOverSubject;
 
     private StateModel stateModel;
     private ScoreModel scoreModel;
