@@ -1,11 +1,20 @@
 using UnityEngine;
 using UniRx;
+using System;
 
 public class InGamePresenter : MonoBehaviour
 {
+    public IObservable<Unit> rankingWindowEvent
+    {
+        get { return rankingWindowSubject; }
+    }
+
     private InGameModel inGameModel;
     private InGameView inGameView;
     [SerializeField] private MenuWindowView menuWindowView;
+    [SerializeField] private RankingWindowPresenter rankingWindowPresenter;
+
+    private Subject<Unit> rankingWindowSubject = new Subject<Unit>();
 
     private void Awake()
     {
@@ -22,6 +31,7 @@ public class InGamePresenter : MonoBehaviour
         inGameView.InputEvent.Subscribe(MoveCells);
         inGameView.ClickMenuButtonEvent.Subscribe(_ => menuWindowView.OpenWindow());
         menuWindowView.ClickRestartButtonEvent.Subscribe(_ => RestartGame());
+        inGameView.ClickRankingButtonEvent.Subscribe(_ => rankingWindowPresenter.OpenWindow());
 
     }
 

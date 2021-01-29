@@ -15,21 +15,28 @@ public class InGameView : MonoBehaviour
     {
         get { return menuButtonSubject; }
     }
+    public IObservable<Unit> ClickRankingButtonEvent
+    {
+        get { return rankingButtonSubject; }
+    }
 
     [SerializeField] private Cell[] cells;
     [SerializeField] private Text scoreText;
     [SerializeField] private Text highScoreText;
     [SerializeField] private Button menuButton;
+    [SerializeField] private Button rankingButton;
 
     private IInput input;
     private Subject<InputDirection> inputSubject = new Subject<InputDirection>();
     private Subject<Unit> menuButtonSubject = new Subject<Unit>();
+    private Subject<Unit> rankingButtonSubject = new Subject<Unit>();
 
 
     private void Start()
     {
         //Buttonの入力を監視
         menuButton.OnClickAsObservable().Subscribe(_ => ClickMenuButton());
+        rankingButton.OnClickAsObservable().Subscribe(_ => ClickRankingButton());
 
         //プラットフォームによって入力クラスを切り替え
         if (Application.platform == RuntimePlatform.Android ||
@@ -46,8 +53,8 @@ public class InGameView : MonoBehaviour
     private void Update()
     {
         InputDirection inputDirection = input.GetInput();
-        
-        if(inputDirection != InputDirection.None)
+
+        if (inputDirection != InputDirection.None)
         {
             inputSubject.OnNext(inputDirection);
         }
@@ -80,6 +87,11 @@ public class InGameView : MonoBehaviour
     private void ClickMenuButton()
     {
         menuButtonSubject.OnNext(Unit.Default);
+    }
+
+    private void ClickRankingButton()
+    {
+        rankingButtonSubject.OnNext(Unit.Default);
     }
 
 }
