@@ -14,10 +14,9 @@ public class ScoreModel : MonoBehaviour
     /// <summary>
     /// スコアの計算ロジック
     /// </summary>
-    /// <param name="cellValue">合成する数値マスの値</param>
+    /// <param name="cellValue">合成するセルの値</param>
     public void SetScore(int cellValue)
     {
-
         score.Value += cellValue * 2;
 
         //ハイスコア更新
@@ -81,7 +80,7 @@ public class ScoreModel : MonoBehaviour
     }
 
     /// <summary>
-    /// スコアをランキング形式でファイルに保存する
+    /// スコアをランキングに保存する
     /// </summary>
     /// <param name="score">スコア</param>
     public void SaveRanking(int score)

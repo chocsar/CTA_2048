@@ -61,9 +61,9 @@ public class InGameModel : MonoBehaviour
         return scoreModel.LoadHighScore();
     }
 
-    public void SaveRanking()
+    public void SaveRanking(int score)
     {
-        scoreModel.SaveRanking(scoreModel.GetScore());
+        scoreModel.SaveRanking(score);
     }
 
 }
