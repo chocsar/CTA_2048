@@ -98,88 +98,25 @@ public class ScoreModel : MonoBehaviour
     /// <returns>ハイスコア</returns>
     public int LoadHighScore()
     {
-        string filePath = Application.dataPath + FilePath.ScoreRanking;
-
-        //ファイルからロード
-        using (StreamReader reader = new StreamReader(filePath))
-        {
-            if (reader.Peek() == -1)
-            {
-                return 0;
-            }
-            else
-            {
-                //一行目に書かれた値を返す
-                return int.Parse(reader.ReadLine());
-            }
-        }
+        return ScoreManager.Instance.LoadHighScore();
     }
 
     /// <summary>
     /// スコアをランキング形式でファイルに保存する
     /// </summary>
-    public void SaveRanking()
+    /// <param name="score">スコア</param>
+    public void SaveRanking(int score)
     {
-        int score = GetScore();
-
-        string filePath = Application.dataPath + FilePath.ScoreRanking;
-        bool isAppend = false;
-        string allText = null;
-
-        //ファイルのロード
-        using (StreamReader reader = new StreamReader(filePath))
-        {
-            //ファイルにデータがない場合
-            if (reader.Peek() == -1)
-            {
-                allText += score.ToString() + "\n";
-            }
-            else
-            {
-                bool isWritten = false;
-
-                while (reader.Peek() != -1)
-                {
-                    string line = reader.ReadLine();
-
-                    //今回のスコアを追加
-                    if (int.Parse(line) < score && !isWritten)
-                    {
-                        isWritten = true;
-                        allText += score.ToString() + "\n";
-                    }
-
-                    allText += line + "\n";
-                }
-            }
-        }
-        //ファイルのセーブ
-        using (StreamWriter writer = new StreamWriter(filePath, isAppend))
-        {
-            writer.Write(allText);
-        }
+        ScoreManager.Instance.SaveRanking(score);
     }
 
     /// <summary>
     /// ランキング順のスコアリストを返す
     /// </summary>
     /// <returns>ランキング順のスコアリスト</returns>
-    public List<int> LoadRanking()
+    public List<int> LoadRanking() //これはRankingWindowのModelに実装すべき？
     {
-        List<int> scoreList = new List<int>();
-        string filePath = Application.dataPath + FilePath.ScoreRanking;
-
-        //ファイルのロード
-        using (StreamReader reader = new StreamReader(filePath))
-        {
-            while (reader.Peek() != -1)
-            {
-                string line = reader.ReadLine();
-                scoreList.Add(int.Parse(line));
-            }
-        }
-
-        return scoreList;
+        return ScoreManager.Instance.LoadRanking();
     }
 
 }

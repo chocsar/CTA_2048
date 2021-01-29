@@ -91,7 +91,7 @@ public class InGameModel : MonoBehaviour
 
     public void SaveRanking()
     {
-        scoreModel.SaveRanking();
+        scoreModel.SaveRanking(scoreModel.GetScore());
     }
 
     private void ChangeStageStates(int[,] stageState)
