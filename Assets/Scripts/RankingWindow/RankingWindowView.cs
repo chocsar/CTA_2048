@@ -10,46 +10,83 @@ public class RankingWindowView : MonoBehaviour
     [SerializeField] private GameObject content;
     [SerializeField] private GameObject rankingElementPrefab;
 
+    private List<RankingElement> generatedRankingElements = new List<RankingElement>();
+
     void Start()
     {
         //ボタンの入力を監視
         closeButton.OnClickAsObservable().Subscribe(_ => CloseWindow());
     }
 
+    /// <summary>
+    /// ランキングウィンドウを開く
+    /// </summary>
     public void OpenWindow()
     {
         gameObject.SetActive(true);
     }
 
+    /// <summary>
+    /// ランキングウィンドウがアクティブかどうか返す
+    /// </summary>
+    /// <returns>アクティブかどうか</returns>
     public bool IsOpenWindow()
     {
         return gameObject.activeSelf;
     }
 
-    public void SetRanking(List<int> scoreList)
+    public void SetRanking(List<int> ranking)
     {
-        //元の要素の削除
-        foreach (Transform element in content.transform)
+        int rankingCount = ranking.Count;
+        int generatedCount = generatedRankingElements.Count;
+
+        //不要な要素を削除
+        DeleteElements(ranking.Count);
+
+        //要素の作成
+        for (int rank = 0; rank < rankingCount; rank++)
         {
-            Destroy(element.gameObject);
-        }
+            int score = ranking[rank];
 
-        //ランキング要素の生成
-        int rank = 1;
-        foreach (int score in scoreList)
-        {
-            GameObject rankingElementObject = Instantiate(rankingElementPrefab) as GameObject;
-            rankingElementObject.transform.SetParent(content.transform);
-            rankingElementObject.transform.localScale = new Vector3(1, 1, 1);
+            if (rank >= generatedCount)
+            {
+                //要素を新たに生成する
+                RankingElement rankingElement = Instantiate(rankingElementPrefab).GetComponent<RankingElement>();
+                rankingElement.transform.SetParent(content.transform);
+                rankingElement.transform.localScale = new Vector3(1, 1, 1);
+                //リストに追加
+                generatedRankingElements.Add(rankingElement);
+            }
 
-            RankingElement rankingElement = rankingElementObject.GetComponent<RankingElement>();
-            rankingElement.SetScore(score);
-            rankingElement.SetRank(rank);
-
-            rank++;
+            //値の設定
+            generatedRankingElements[rank].SetScore(score);
+            generatedRankingElements[rank].SetRank(rank + 1);
         }
     }
 
+    /// <summary>
+    /// 不要なランキング要素を削除する
+    /// </summary>
+    /// <param name="rankingCount">ランキングの数</param>
+    private void DeleteElements(int rankingCount)
+    {
+        int generatedCount = generatedRankingElements.Count;
+
+        if (rankingCount < generatedCount)
+        {
+            int removeNum = generatedCount - rankingCount;
+            for (int i = 1; i <= removeNum; i++)
+            {
+                RankingElement element = generatedRankingElements[generatedCount - i];
+                generatedRankingElements.RemoveAt(generatedCount - i);
+                Destroy(element.gameObject);
+            }
+        }
+    }
+
+    /// <summary>
+    /// ランキングウィンドウを閉じる
+    /// </summary>
     private void CloseWindow()
     {
         gameObject.SetActive(false);

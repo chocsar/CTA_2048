@@ -27,6 +27,4 @@ public class RankingWindowPresenter : MonoBehaviour
         return rankingWindowView.IsOpenWindow();
     }
 
-
-
 }
