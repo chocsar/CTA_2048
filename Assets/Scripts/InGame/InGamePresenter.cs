@@ -1,4 +1,5 @@
 using UnityEngine;
+using UniRx;
 
 public class InGamePresenter : MonoBehaviour
 {
@@ -6,54 +7,35 @@ public class InGamePresenter : MonoBehaviour
     private InGameView inGameView;
     [SerializeField] private MenuWindowView menuWindowView;
 
-    private void Awake()
+    private void Start()
     {
         inGameModel = GetComponent<InGameModel>();
         inGameView = GetComponent<InGameView>();
+        inGameModel.Initialize();
 
         // Modelの値の変更を監視する
-        inGameModel.ChangeStageStateEvent += inGameView.ApplyStage;
-        inGameModel.GameOverEvent += GameOver;
-        inGameModel.ChangeScoreEvent += inGameView.SetScore;
-        inGameModel.ChangeHighScoreEvent += inGameView.SetHighScore;
+        inGameModel.ChangeStageStatesEvent.Subscribe(inGameView.ApplyStage);
+        inGameModel.ChangeScoreEvent.Subscribe(inGameView.SetScore);
+        inGameModel.ChangeHighScoreEvent.Subscribe(inGameView.SetHighScore);
+        inGameModel.GameOverEvent.Subscribe(_ => GameOver());
 
         // Viewの入力を監視する
-        inGameView.InputRightEvent += MoveCellRight;
-        inGameView.InputLeftEvent += MoveCellLeft;
-        inGameView.InputUpEvent += MoveCellUp;
-        inGameView.InputDownEvent += MoveCellDown;
-        inGameView.ClickMenuButtonEvent += menuWindowView.OpenWindow;
-        menuWindowView.ClickRestartButtonEvent += RestartGame;
+        inGameView.InputEvent.Subscribe(MoveCells);
+        inGameView.ClickMenuButtonEvent.Subscribe(_ => menuWindowView.OpenWindow());
+        menuWindowView.ClickRestartButtonEvent.Subscribe(_ => RestartGame());
 
-    }
-
-    private void Start()
-    {
-        // 初期化
+        // ゲームの初期化
         inGameModel.InitStage();
         inGameModel.SetHighScore(inGameModel.LoadHighScore());
         inGameModel.ResetScore();
     }
 
-    private void MoveCellRight()
+    private void MoveCells(InputDirection inputDirection)
     {
+        //メニューが開いてる場合は移動させない
         if (menuWindowView.IsOpenWindow()) return;
-        inGameModel.MoveCellRight();
-    }
-    private void MoveCellLeft()
-    {
-        if (menuWindowView.IsOpenWindow()) return;
-        inGameModel.MoveCellLeft();
-    }
-    private void MoveCellUp()
-    {
-        if (menuWindowView.IsOpenWindow()) return;
-        inGameModel.MoveCellUp();
-    }
-    private void MoveCellDown()
-    {
-        if (menuWindowView.IsOpenWindow()) return;
-        inGameModel.MoveCellDown();
+
+        inGameModel.MoveCells(inputDirection);
     }
 
     /// <summary>
@@ -76,6 +58,7 @@ public class InGamePresenter : MonoBehaviour
         inGameModel.InitStage();
         inGameModel.SetHighScore(inGameModel.LoadHighScore());
         inGameModel.ResetScore();
+
         menuWindowView.CloseWindow();
     }
 

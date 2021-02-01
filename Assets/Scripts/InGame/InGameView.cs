@@ -1,25 +1,27 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using UniRx;
 
 public class InGameView : MonoBehaviour
 {
     private const int StageSize = 4;
 
-    public event Action InputRightEvent;
-    public event Action InputLeftEvent;
-    public event Action InputUpEvent;
-    public event Action InputDownEvent;
-    public event Action ClickMenuButtonEvent;
+    public IObservable<InputDirection> InputEvent => inputSubject;
+    public IObservable<Unit> ClickMenuButtonEvent => menuButton.OnClickAsObservable();
 
     [SerializeField] private Cell[] cells;
     [SerializeField] private Text scoreText;
     [SerializeField] private Text highScoreText;
+    [SerializeField] private Button menuButton;
 
     private IInput input;
+    private Subject<InputDirection> inputSubject = new Subject<InputDirection>();
+
 
     private void Start()
     {
+        //プラットフォームによって入力クラスを切り替え
         if (Application.platform == RuntimePlatform.Android ||
             Application.platform == RuntimePlatform.IPhonePlayer)
         {
@@ -33,20 +35,11 @@ public class InGameView : MonoBehaviour
 
     private void Update()
     {
-        switch (input.GetInput())
+        InputDirection inputDirection = input.GetInput();
+
+        if (inputDirection != InputDirection.None)
         {
-            case InputDirection.Right:
-                InputRightEvent?.Invoke();
-                break;
-            case InputDirection.Left:
-                InputLeftEvent?.Invoke();
-                break;
-            case InputDirection.Up:
-                InputUpEvent?.Invoke();
-                break;
-            case InputDirection.Down:
-                InputDownEvent?.Invoke();
-                break;
+            inputSubject.OnNext(inputDirection);
         }
     }
 
@@ -68,14 +61,10 @@ public class InGameView : MonoBehaviour
     {
         scoreText.text = $"Score: {score}";
     }
+
     public void SetHighScore(int score)
     {
         highScoreText.text = $"Score: {score}";
-    }
-
-    public void ClickMenuButton()
-    {
-        ClickMenuButtonEvent?.Invoke();
     }
 
 }

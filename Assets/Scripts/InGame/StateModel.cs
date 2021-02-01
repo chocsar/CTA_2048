@@ -1,18 +1,24 @@
 ﻿using System;
 using UnityEngine;
+using UniRx;
 
 public class StateModel : MonoBehaviour
 {
-    private readonly int[,] stageStates = new int[4, 4];
     private const int StageSize = 4;
     private const int MinCellValue = 2;
     private const float Probability = 0.5f;
     private const int FirstDimension = 0;
     private const int SecondDimension = 1;
 
-    public event Action<int[,]> ChangeStageStateEvent;
-    public event Action GameOverEvent;
-    public event Action<int> ChangeScoreEvent;
+    public IObservable<int[,]> ChangeStageStatesEvent => stageStatesSubject;
+    public IObservable<int> MergeCellsEvent => mergeSubject;
+    public IObservable<Unit> GameOverEvent => gameOverSubject;
+
+    private Subject<int[,]> stageStatesSubject = new Subject<int[,]>();
+    private Subject<int> mergeSubject = new Subject<int>();
+    private Subject<Unit> gameOverSubject = new Subject<Unit>();
+
+    private readonly int[,] stageStates = new int[4, 4];
 
     /// <summary>
     /// 盤面の再描画を行う必要があるかのフラグ
@@ -42,120 +48,62 @@ public class StateModel : MonoBehaviour
         stageStates[(int)posA.x, (int)posA.y] = MinCellValue;
         stageStates[(int)posB.x, (int)posB.y] = UnityEngine.Random.Range(0, 1.0f) < Probability ? MinCellValue : MinCellValue * 2;
 
-        //ステージの状態を画面に反映
-        ChangeStageStateEvent?.Invoke(stageStates);
+        stageStatesSubject.OnNext(stageStates);
     }
 
     /// <summary>
-    /// セルを右に移動させる
+    /// セルを移動させる
     /// </summary>
-    public void MoveCellRight()
+    public void MoveCells(InputDirection inputDirection)
     {
         isDirty = false;
 
-        for (var col = StageSize; col >= 0; col--)
+        switch (inputDirection)
         {
-            for (var row = 0; row < StageSize; row++)
-            {
-                MoveCell(row, col, 1, 0);
-            }
+            //セルを右に移動
+            case InputDirection.Right:
+                for (var col = StageSize; col >= 0; col--)
+                {
+                    for (var row = 0; row < StageSize; row++)
+                    {
+                        MoveCell(row, col, 1, 0);
+                    }
+                }
+                break;
+            //セルを左に移動
+            case InputDirection.Left:
+                for (var row = 0; row < StageSize; row++)
+                {
+                    for (var col = 0; col < StageSize; col++)
+                    {
+                        MoveCell(row, col, -1, 0);
+                    }
+                }
+                break;
+            //セルを上に移動
+            case InputDirection.Up:
+                for (var row = 0; row < StageSize; row++)
+                {
+                    for (var col = 0; col < StageSize; col++)
+                    {
+                        MoveCell(row, col, 0, -1);
+                    }
+                }
+                break;
+            //セルを下に移動
+            case InputDirection.Down:
+                for (var row = StageSize; row >= 0; row--)
+                {
+                    for (var col = 0; col < StageSize; col++)
+                    {
+                        MoveCell(row, col, 0, 1);
+                    }
+                }
+                break;
         }
 
-        if (isDirty)
-        {
-            CreateNewRandomCell();
-
-            ChangeStageStateEvent?.Invoke(stageStates);
-
-            if (IsGameOver(stageStates))
-            {
-                GameOverEvent?.Invoke();
-            }
-        }
-    }
-
-    /// <summary>
-    /// セルを左に移動させる
-    /// </summary>
-    public void MoveCellLeft()
-    {
-        isDirty = false;
-
-        for (var row = 0; row < StageSize; row++)
-        {
-            for (var col = 0; col < StageSize; col++)
-            {
-                MoveCell(row, col, -1, 0);
-            }
-        }
-
-        if (isDirty)
-        {
-            CreateNewRandomCell();
-
-            ChangeStageStateEvent?.Invoke(stageStates);
-
-            if (IsGameOver(stageStates))
-            {
-                GameOverEvent?.Invoke();
-            }
-        }
-    }
-
-    /// <summary>
-    /// セルを上に移動させる
-    /// </summary>
-    public void MoveCellUp()
-    {
-        isDirty = false;
-
-        for (var row = 0; row < StageSize; row++)
-        {
-            for (var col = 0; col < StageSize; col++)
-            {
-                MoveCell(row, col, 0, -1);
-            }
-        }
-
-        if (isDirty)
-        {
-            CreateNewRandomCell();
-
-            ChangeStageStateEvent?.Invoke(stageStates);
-
-            if (IsGameOver(stageStates))
-            {
-                GameOverEvent?.Invoke();
-            }
-        }
-    }
-
-    /// <summary>
-    /// セルを下に移動させる
-    /// </summary>
-    public void MoveCellDown()
-    {
-        isDirty = false;
-
-        for (var row = StageSize; row >= 0; row--)
-        {
-            for (var col = 0; col < StageSize; col++)
-            {
-                MoveCell(row, col, 0, 1);
-            }
-        }
-
-        if (isDirty)
-        {
-            CreateNewRandomCell();
-
-            ChangeStageStateEvent?.Invoke(stageStates);
-
-            if (IsGameOver(stageStates))
-            {
-                GameOverEvent?.Invoke();
-            }
-        }
+        //ステートの更新があった場合
+        if (isDirty) OnFinishedMoveingCells();
     }
 
     /// <summary>
@@ -199,7 +147,7 @@ public class StateModel : MonoBehaviour
         else if (value == nextValue)
         {
             MergeCells(row, col, nextRow, nextCol, value);
-            ChangeScoreEvent?.Invoke(value);
+            mergeSubject.OnNext(value);
         }
         // 異なる値のときは移動処理を終了
         else if (value != nextValue)
@@ -252,9 +200,25 @@ public class StateModel : MonoBehaviour
     }
 
     /// <summary>
+    /// セルを移動し終えた時の処理（新規セルの作成, ステージの画面反映, ゲームオーバー判定）
+    /// </summary>
+    private void OnFinishedMoveingCells()
+    {
+        //新たなセルを作成
+        CreateNewRandomCell();
+        //ステージの状態を画面に反映
+        stageStatesSubject.OnNext(stageStates);
+        //ゲームオーバーの判定
+        if (IsGameOver(stageStates))
+        {
+            gameOverSubject.OnNext(Unit.Default);
+        }
+    }
+
+    /// <summary>
     /// セルを新しく生成する
     /// </summary>
-    public void CreateNewRandomCell()
+    private void CreateNewRandomCell()
     {
         // ゲーム終了時はスポーンしない
         if (IsGameOver(stageStates))

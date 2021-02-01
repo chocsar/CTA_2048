@@ -616,18 +616,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 156375517}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2059380210}
-        m_MethodName: ClickRestartButton
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &156375517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -932,18 +921,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 212283339}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1449061364}
-        m_MethodName: ClickMenuButton
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &212283339
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2794,18 +2772,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 985248759}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2059380210}
-        m_MethodName: CloseWindow
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &985248759
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4026,6 +3993,7 @@ MonoBehaviour:
   - {fileID: 263379756}
   scoreText: {fileID: 1226145406}
   highScoreText: {fileID: 367621331}
+  menuButton: {fileID: 212283338}
 --- !u!114 &1449061365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5591,3 +5559,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0963c22fde38c4480b5ccaf19d28b4e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  closeButton: {fileID: 985248758}
+  restartButton: {fileID: 156375516}

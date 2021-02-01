@@ -1,12 +1,14 @@
 ﻿using System;
 using UnityEngine;
+using UniRx;
 
 public class ScoreModel : MonoBehaviour
 {
-    public event Action<int> ChangeScoreEvent;
-    public event Action<int> ChangeHighScoreEvent;
-    private int score;
-    private int highScore;
+    public IObservable<int> ChangeScoreEvent => score;
+    public IObservable<int> ChangeHighScoreEvent => highScore;
+
+    private ReactiveProperty<int> score = new ReactiveProperty<int>();
+    private ReactiveProperty<int> highScore = new ReactiveProperty<int>();
 
     /// <summary>
     /// スコアの計算ロジック
@@ -14,13 +16,13 @@ public class ScoreModel : MonoBehaviour
     /// <param name="cellValue">合成する数値マスの値</param>
     public void SetScore(int cellValue)
     {
-        score += cellValue * 2;
-        ChangeScoreEvent?.Invoke(score);
+
+        score.Value += cellValue * 2;
 
         //ハイスコア更新
-        if (score > highScore)
+        if (score.Value > highScore.Value)
         {
-            SetHighScore(score);
+            SetHighScore(score.Value);
         }
     }
 
@@ -30,7 +32,7 @@ public class ScoreModel : MonoBehaviour
     /// <returns>スコア</returns>
     public int GetScore()
     {
-        return score;
+        return score.Value;
     }
 
     /// <summary>
@@ -38,8 +40,7 @@ public class ScoreModel : MonoBehaviour
     /// </summary>
     public void ResetScore()
     {
-        score = 0;
-        ChangeScoreEvent?.Invoke(score);
+        score.Value = 0;
     }
 
     /// <summary>
@@ -48,8 +49,7 @@ public class ScoreModel : MonoBehaviour
     /// <param name="score">スコア</param>
     public void SetHighScore(int score)
     {
-        highScore = score;
-        ChangeHighScoreEvent?.Invoke(highScore);
+        highScore.Value = score;
     }
 
     /// <summary>
@@ -58,7 +58,7 @@ public class ScoreModel : MonoBehaviour
     /// <returns>ハイスコア</returns>
     public int GetHighScore()
     {
-        return highScore;
+        return highScore.Value;
     }
 
     /// <summary>
